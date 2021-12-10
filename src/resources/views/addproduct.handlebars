@@ -1,0 +1,106 @@
+<link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="../../css/preview-image.css">
+<link rel="stylesheet" href="../../css/addproduct.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<div class="col" style="margin: auto; text-align: center;padding-top: 30px;">
+    <h1>Thêm sản phẩm</h1>
+</div>
+
+<form action="/product/add-product" method="post" enctype="multipart/form-data">
+
+    <div class="row">
+        <div class="col-xl-6 p-5">
+            <div class="form-group">
+                <label for="name">Tên sản phẩm</label>
+                <input type="text" class="form-control input" id="name" name="name"
+                       placeholder="Tên sản phẩm" style="background-color: #DFDFDF" required>
+            </div>
+            <div class="form-group">
+                <label for="export_price">Giá bán</label>
+                <input type="number" class="form-control input" id="export_price" name="export_price"
+                       placeholder="Giá sản phẩm" required min="1" step="0.01">
+            </div>
+            <div class="form-group">
+                <label for="impot_price">Giá nhập</label>
+                <input type="number" class="form-control input" id="impot_price" name="impot_price"
+                       placeholder="Giá sản phẩm" required min="1" step="0.01">
+            </div>
+            <div class="form-group">
+                <label for="sale">Khuyến mãi</label>
+                <input type="number" class="form-control input" id="sale" name="sale"
+                       placeholder="Khuyến mãi (%)" required min="0" max="100" step="0.01">
+            </div>
+            <div class="form-group">
+                <label for="id_category">Loại</label>
+                <select class="form-control input" id="id_category" name="id_category" required>
+                    <option selected value="">Chọn...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="id_style">Mùa</label>
+                <select class="form-control input" id="id_style" name="id_style" required>
+                    <option selected value="">Chọn...</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-xl-6 p-5">
+            <div class="form-group">
+                <label for="id_brand">Thương hiệu</label>
+                <select class="form-control input" id="id_brand" name="id_brand" required>
+                    <option selected value="">Chọn...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="description">Thông tin chi tiết</label>
+                <textarea class="form-control input" id="description" rows="3" name="description"></textarea>
+            </div>
+            <div class="form-group field input pl-2 pb-2" style="border-radius: 5px;">
+                <input type="file" accept="image/*" class="form-control-file" id="pictureProduct" name="pictureProduct"
+                       multiple="true" onclick="removePreviewImage()">
+                <label for="pictureProduct" class="btn-add-img">Thêm ảnh</label>
+            </div>
+            <div class="form-group">
+                <label>Số lượng</label>
+
+                <div class="row m-2 border pt-2 pb-2" style="background-color: #DFDFDF; border-radius: 5px;">
+                    <div class="col-6" id="newElementKey">Size</div>
+                    <div class="col-6" id="newElementValue">Số lượng nhập</div>
+                </div>
+
+                <div class="row ml-2">
+                    <div id="dynamicCheck" style="width: 30px; height: 30px;">
+                        <img src="../../image/add2.svg" width="100%" height="100%" onclick="add();">
+                    </div>
+                    <div id="dynamicCheck" style="width: 30px; height: 30px;">
+                        <img src="../../image/remove.svg" width="100%" height="100%" onclick="remove();">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col pb-5" style="margin: auto; text-align: center">
+        <a href="/product"><input type="button"  value="Hủy"class="btn" style="width: 300px; background-color: #C5C5C5; color: black"/></a>
+        <input value="Thêm" type="submit" class="btn" style="width: 300px; background-color: red; color: white"/>
+    </div>
+</form>
+<div id="myModal" class="my_modal">
+    <div class="modal-dialog modal-notify modal-info" role="document">
+        <div class="modal-content text-center">
+            <div class="modal-body">
+                <img id="icon" class="animated rotateIn mb-4" src="../../image/notifycation.png" width="150"
+                     height="150"/>
+                <p id="message">{{{message}}}</p>
+            </div>
+            <div class="mb-3 flex-center">
+                <a style="width: 30%; background-color: red; color: white" type="button"
+                   id="close" class="btn waves-effect" data-dismiss="modal">Đồng ý</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src ='../../js/addproduct.js'></script>

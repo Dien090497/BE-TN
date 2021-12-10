@@ -1,0 +1,37 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "nodemon --inspect src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.3.3",
+    "express-session": "^1.17.2",
+    "express-sessions": "^1.0.6",
+    "jsonwebtoken": "^8.5.1",
+    "md5": "^2.3.0",
+    "multer": "^1.4.3",
+    "mysql": "^2.18.1",
+    "node-sass": "^6.0.1",
+    "nodemon": "^2.0.12"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dien090497/aeshop.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Dien090497/aeshop/issues"
+  },
+  "homepage": "https://github.com/Dien090497/aeshop#readme",
+  "description": ""
+}

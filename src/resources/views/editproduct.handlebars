@@ -1,0 +1,210 @@
+<link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="../../css/preview-image.css">
+<style>
+    .input {
+        background-color: #DFDFDF;
+    }
+
+    .form-control-file {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .btn-add-img {
+        color: white;
+        padding: 5px 20px;
+        background-color: #FF000A;
+        border-radius: 15px;
+        margin-top: 15px;
+    }
+</style>
+
+<div class="col" style="margin: auto; text-align: center;padding-top: 30px;">
+    <h1>Sửa thông tin sản phẩm</h1>
+</div>
+
+
+
+<form action="/product/edit-product/{{data.id_product}}" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-6 p-5">
+            <div class="form-group">
+                <label for="id_product">Mã sản phẩm</label>
+                <input type="text" value="{{data.id_product}}" class="form-control input" id="id_product" name="id_product" disabled>
+            </div>
+            <div class="form-group">
+                <label for="name">Tên sản phẩm</label>
+                <input type="text" value="{{data.name}}" class="form-control input" id="name" name="name" value="{{data.maneProduct}}"
+                    placeholder="Tên sản phẩm">
+            </div>
+            <div class="form-group">
+                <label for="export_price">Giá bán</label>
+                <input type="number" class="form-control input" id="export_price" name="export_price"
+                    value="{{data.export_price}}" placeholder="Giá sản phẩm" min="1" step="0.01">
+            </div>
+            <div class="form-group">
+                <label for="impot_price">Giá nhập</label>
+                <input type="number" class="form-control input" id="impot_price" name="impot_price"
+                       value="{{data.impot_price}}" placeholder="Giá sản phẩm" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+                <label for="sale">Khuyến mãi</label>
+                <input type="number" class="form-control input" id="sale" name="sale"
+                    value="{{data.sale}}" placeholder="Khuyến mãi (%)" min="0" max="100" step="0.01">
+            </div>
+            <div class="form-group">
+                <label for="id_category">Loại</label>
+                <select class="custom-select mr-sm-2 input" id="id_category" name="id_category">
+                    <option value="{{data.id_category}}">{{data.name_category}}</option>
+                    {{#each data.category}}
+                        <option value="{{this.id_category}}">{{this.name_category}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="id_style">Mùa</label>
+                <select class="custom-select mr-sm-2 input" id="id_style" name="id_style">
+                    <option value="{{data.id_style}}">{{data.style_name}}</option>
+                    {{#each data.seasion}}
+                        <option value="{{this.id_style}}">{{this.style_name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="id_brand">Thương hiệu</label>
+                <select class="custom-select mr-sm-2 input" id="id_brand" name="id_brand">
+                    <option value="{{data.id_brand}}">{{data.brand_name}}</option>
+                    {{#each data.brand}}
+                        <option value="{{this.id_brand}}">{{this.brand_name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+        </div>
+
+
+        <div class="col-6 p-5">
+            <div class="form-group">
+                <label for="description">Thông tin chi tiết</label>
+                <textarea class="form-control input" id="description" rows="3" name="description">{{data.description}}</textarea>
+            </div>
+            <div class="form-group input p-2">
+                <label>Hình ảnh</label>
+                <div id="preview" style="margin-top: 10px; margin-bottom: 10px;"></div>
+                <input type="file" accept="image/*" class="form-control input" id="pictureProduct" name="pictureProduct" multiple="true">
+                <div class="p-3">
+                    {{#each data.src}}
+                    <img src="https://ae-shop.herokuapp.com/{{this}}" class="imageThumb" id="img{{@index}}" name="{{this}}">
+                    {{/each}}
+                </div>
+            </div>
+            <div class="form-group input p-2" style="border-radius: 5px;">
+                <label>Số lượng nhập</label>
+
+                <div class="row m-2 border">
+                    <div class="col-6 p-2" id="newElementKey">Size
+                        {{#each data.size}}
+                        <input type='text' id='keyInfoProduct{{@index}}' name='keyInfoProduct'
+                            style='margin-top: 10px; margin-bottom: 10px; width: 100%;' value='{{this.size_name}}' />
+                        {{/each}}
+                    </div>
+                    <div class="col-6 p-2" id="newElementValue">Số lượng nhập
+                        {{#each data.size}}
+                        <input type='text' id='valueInfoProduct{{@index}}' name='valueInfoProduct'
+                            style='margin-top: 10px; margin-bottom: 10px; width: 100%;' value='{{this.qnt}}' />
+                        {{/each}}
+                    </div>
+                </div>
+                <div class="row ml-2">
+                    <div id="dynamicCheck" style="width: 30px; height: 30px;">
+                        <img src="../../image/add2.svg" width="100%" height="100%" onclick="add()">
+                    </div>
+                    <div id="dynamicCheck" style="width: 30px; height: 30px;">
+                        <img src="../../image/remove.svg" width="100%" height="100%" onclick="remove()">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col p-5" style="margin: auto; text-align: center">
+        <input type="submit" class="btn btn-primary" style="width: 300px;" />
+    </div>
+    <input type="text" id="list-img-remove" style="display:none;" name="listImgRemove">
+
+</form>
+
+<script>
+    var i = {{ data.size.length }};
+    function add() {
+        var txtNewInputKey = document.createElement('div');
+        var txtNewInputValue = document.createElement('div');
+
+        // Then add the content (a new input box) of the element.
+        txtNewInputKey.innerHTML = "<input type='text' id='keyInfoProduct" + i + "' name='keyInfoProduct' style='margin-top: 10px; margin-bottom: 10px;width: 100%;'/>";
+        txtNewInputValue.innerHTML = "<input type='text' id='valueInfoProduct" + i + "' name='valueInfoProduct' style='margin-top: 10px; margin-bottom: 10px; width: 100%;'/>";
+
+        // Finally put it where it is supposed to appear.
+        document.getElementById("newElementKey").appendChild(txtNewInputKey);
+        document.getElementById("newElementValue").appendChild(txtNewInputValue);
+        i++;
+    }
+
+    function remove() {
+        var keyInfoProduct = document.getElementById("keyInfoProduct" + i);
+        var ValueInfoProduct = document.getElementById("valueInfoProduct" + i);
+
+        keyInfoProduct.remove();
+        ValueInfoProduct.remove();
+        i--;
+        if (i < 0) {
+            i = 0;
+        }
+    }
+
+    function previewImages() {
+
+        var preview = document.querySelector('#preview');
+
+        if (this.files) {
+            [].forEach.call(this.files, readAndPreview);
+        }
+
+        function readAndPreview(file) {
+
+            // Make sure `file.name` matches our extensions criteria
+            if (!/\.(jpe?g|png|gif)$/i.test(file.name)) {
+                return alert("Hãy chọn ảnh");
+            } // else...
+
+            var reader = new FileReader();
+
+            reader.addEventListener("load", function () {
+                var image = new Image();
+                image.height = 100;
+                image.title = file.name;
+                image.src = this.result;
+                image.style.paddingRight = 10;
+                preview.appendChild(image);
+            });
+
+            reader.readAsDataURL(file);
+        }
+
+    }
+    document.querySelector('#pictureProduct').addEventListener("change", previewImages);
+    var listImgRemove = document.getElementById("list-img-remove");
+    var listImg =[];
+    {{#each data.src }}
+    var img{{@index}} = document.getElementById("img" + {{@index}});
+    img{{@index}}.onclick = function(){
+        listImg.push(img{{@index}}.name);
+        listImgRemove.value = listImg;
+        img{{@index}}.remove();
+    }
+    {{/each}}
+</script>

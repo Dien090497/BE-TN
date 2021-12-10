@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AE Shop</title>
+    <link rel="stylesheet" href="../../../css/main.css">
+    <link rel="stylesheet" href="../../../bootstrap/css/main.css">
+    <link rel="stylesheet" href="../../../fonts/fontawesome-all.min.css">
+
+</head>
+
+
+<body style="background-color: #DFDFDF; overflow: scroll; ">
+    <nav class="navbar navbar-light navbar-expand" style="height:100px; background-color:#FF000A; width: 100%;">
+        <div class="container-fluid">
+            <div>
+                <a class="nav-link" href="#">
+                    <img class="border rounded-circle" src="../../../image/logo1.svg" width="80" height="80" alt>
+                </a>
+            </div>
+            <div>
+                <a class="nav-link" href="#">
+                    <img src="../../../image/logo2.svg" width="150">
+                </a>
+            </div>
+            <ul class="nav flex-nowrap" style="align-items: center;">
+                <li>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">
+                            <img class="border rounded-circle" src="../../../image/logo1.svg" width="60" height="60">
+                        </a>
+                        <div class="dropdown-menu shadow dropdown-menu-right ani    mated--grow-in" role="menu">
+                            <a class="dropdown-item" role="presentation" href="#">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile
+                            </a>
+                            <a class="dropdown-item" role="presentation" href="#">
+                                <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Settings
+                            </a>
+                            <a class="dropdown-item" role="presentation" href="#">
+                                <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Activity log
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" role="presentation" href="#">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <div class="d-none d-sm-block topbar-divider"></div>
+                <li>
+                    <div>
+                        <a class="nav-link" href="#">
+                            <img class="img-profile" src="../../../image/Logout.svg" width="40" height="40"></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div id="content" style=" background-color: #DFDFDF;">
+        <div class="row" style="padding: 40px;">
+            <div class="col-xl-2 pb-4">
+                <nav id="nav-menu">
+                    <ul class="navbar-nav" id="accordionSidebar" style="float: none">
+                        <li class="nav-item" id="news" role="presentation">
+                            <a class="nav-link" id="newsChild" href="/news">
+                                <i class="fas fa-newspaper pr-2"></i>
+                                <span style="display: inline-block;">Tin tức</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" id="product" role="presentation">
+                            <a class="nav-link" id="productChild" href="/product">
+                                <i class="fas fa-box pr-2"></i>
+                                <span style="display: inline-block;">Quản lý sẳn phẩm</span>
+                            </a>
+
+                        </li>
+                        <li class="nav-item" id="bill" role="presentation" style="position: relative;">
+                            <a class="nav-link" id="billChild" href="/order">
+                                <i class="fas fa-file-invoice-dollar pr-2"></i>
+                                <span style="display: inline-block;">Quản lý đơn hàng</span>
+                                <div class="rounded-circle" id="newBill">
+                                    <p id="newBillNumber">1</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item" id="setting" role="presentation">
+                            <a class="nav-link" id="settingChild" href="/administrator">
+                                <i class="fas fa-user-cog pr-2"></i>
+                                <span style="display: inline-block;">Cài đặt tài khoản</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" id="support" role="presentation">
+                            <a class="nav-link" id="supportChild" href="/help">
+                                <i style="width: 28px;" class="fas fa-question pr-2"></i>
+                                <span  style="display: inline-block;">Hỗ trợ</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" id="about-us" role="presentation">
+                            <a class="nav-link" id="aboutUsChild" href="/about-us">
+                                <i style="width: 28px;" class="fas fa-info pr-2 pl-1"></i>
+                                <span  style="display: inline-block;">Thông tin về cửa hàng</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-xl-10">
+                <div class="bodyContainer">
+                    {{{body}}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setCookie(cname, cvalue, exdays) {
+            const d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+
+        function getCookie(cname) {
+            let name = cname + "=";
+            let ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+        var news = document.getElementById("news")
+        var product = document.getElementById("product")
+        var bill = document.getElementById("bill")
+        var setting = document.getElementById("setting")
+        var support = document.getElementById("support")
+        var aboutUs = document.getElementById("about-us")
+
+        var newsChild = document.getElementById("newsChild")
+        var productChild = document.getElementById("productChild")
+        var billChild = document.getElementById("billChild")
+        var settingChild = document.getElementById("settingChild")
+        var supportChild = document.getElementById("supportChild")
+        var aboutUsChild = document.getElementById("aboutUsChild")
+
+        var newBill = document.getElementById("newBill")
+        var newBillNumber = document.getElementById("newBillNumber")
+
+        news.onclick = function () {
+            setCookie("menu", "news");
+        }
+        if (getCookie("menu") == "news") {
+            news.style.backgroundColor = '#FF000A';
+            newsChild.style.color = '#FFFFFF';
+            productColor();
+            billColor()
+            settingColor()
+            supportColor()
+        }
+
+        product.onclick = function () {
+            setCookie("menu", "product");
+        }
+        if (getCookie("menu") == "product") {
+            product.style.backgroundColor = '#FF000A';
+            productChild.style.color = '#FFFFFF';
+            newsColor()
+            billColor()
+            settingColor()
+            supportColor()
+        }
+
+        bill.onclick = function () {
+            setCookie("menu", "bill");
+        }
+        if (getCookie("menu") == "bill") {
+            bill.style.backgroundColor = '#FF000A';
+            billChild.style.color = '#FFFFFF';
+            newBill.style.backgroundColor = '#FFFFFF';
+            newBillNumber.style.color = '#FF000A';
+            newsColor();
+            productColor()
+            settingColor()
+            supportColor()
+        }else{
+            newBill.style.backgroundColor = '#FF000A';
+            newBillNumber.style.color = '#FFFFFF';
+        }
+
+        setting.onclick = function () {
+
+            setCookie("menu", "setting");
+        }
+        if (getCookie("menu") == "setting") {
+            setting.style.backgroundColor = '#FF000A';
+            settingChild.style.color = '#FFFFFF';
+            newsColor();
+            productColor()
+            billColor()
+            supportColor()
+        }
+
+        support.onclick = function () {
+            setCookie("menu", "support");
+        }
+        if (getCookie("menu") == "support") {
+            support.style.backgroundColor = '#FF000A';
+            supportChild.style.color = '#FFFFFF';
+            newsColor();
+            productColor()
+            billColor()
+            settingColor()
+        }
+        aboutUs.onclick = function () {
+            setCookie("menu", "about-us");
+        }
+        if (getCookie("menu") == "about-us") {
+            aboutUs.style.backgroundColor = '#FF000A';
+            aboutUsChild.style.color = '#FFFFFF';
+            newsColor();
+            productColor()
+            billColor()
+            settingColor()
+        }
+
+        function newsColor() {
+            news.style.backgroundColor = '#FFFFFF';
+            newsChild.style.color = '#000000';
+        }
+
+        function productColor() {
+            product.style.backgroundColor = '#FFFFFF';
+            productChild.style.color = '#000000';
+        }
+
+        function billColor() {
+            bill.style.backgroundColor = '#FFFFFF';
+            billChild.style.color = '#000000';
+        }
+
+        function settingColor() {
+            setting.style.backgroundColor = '#FFFFFF';
+            settingChild.style.color = '#000000';
+        }
+
+        function supportColor() {
+            support.style.backgroundColor = '#FFFFFF';
+            supportChild.style.color = '#000000';
+        }
+        function aboutUsColor() {
+            aboutUs.style.backgroundColor = '#FFFFFF';
+            aboutUsChild.style.color = '#000000';
+        }
+
+
+    </script>
+
+    <script src="../../../js/jquery.min.js"></script>
+    <script src="../../../bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>
