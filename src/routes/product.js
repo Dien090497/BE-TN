@@ -45,5 +45,4 @@ router.get("/category",(req, res) => controller.listCategory(req, res));
 
 router.get("/style",(req, res) => controller.listStyle(req, res));
 
-
 module.exports = router;
