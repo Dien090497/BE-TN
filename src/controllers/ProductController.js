@@ -36,41 +36,6 @@ class ProductController {
     })
   }
 
-  editProduct(req, res) {
-    Product.DetailProduct(req.con, req.params.id_product, (err, result) => {
-      if (err) return res.redirect('/product')
-      if (result[0]) {
-        result[0].src = [];
-        result[0].size = []
-        result[0].brand = []
-        result[0].category = []
-        result[0].seasion = []
-        Product.ListImageProduct(req.con, req.params.id_product, (err, resultImage) => {
-          if (err) return res.redirect('/product')
-          if (resultImage) {
-            for (let i in resultImage) {
-              result[0].src.push(resultImage[i].src)
-            }
-            Product.SizeProduct(req.con, req.params.id_product, (err, resultSize) => {
-              result[0].size = resultSize;
-              Product.ListOption(req.con, 'seasion', (err, resultSeasion) => {
-                result[0].seasion = resultSeasion;
-                Product.ListOption(req.con, 'brand', (err, resultBrand) => {
-                  result[0].brand = resultBrand;
-                  Product.ListOption(req.con, 'category', (err, resultCategory) => {
-                    result[0].category = resultCategory;
-                    // res.send(result[0]);
-                    res.render('editproduct', {data: result[0]})
-                  })
-                })
-              })
-            })
-          }
-        })
-      }
-    })
-  }
-
   addProductFinal(req, res) {
     var fileName = req.files.map(function (item, index) {
       return `uploads/` + item.filename;
@@ -205,12 +170,6 @@ class ProductController {
   listCategory(req, res) {
     Product.ListCategory(req.con, (err, result) => {
       if (result) return res.json(result);
-    })
-  }
-
-  listProductApi(req, res) {
-    Product.ListProduct(req.con, (err, result) => {
-      if (result) return res.json(result)
     })
   }
 

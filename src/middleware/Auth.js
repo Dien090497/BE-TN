@@ -11,6 +11,7 @@ function verifyToken(req, res, next) {
     if (token) {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function(err, decoded) {
             if (err) {
+
                 return res.status(401).json(errorResponse(401,'Token is expire'))
             }
             if (decoded){
@@ -22,6 +23,7 @@ function verifyToken(req, res, next) {
         return res.status(401).json(errorResponse(401,'Token is expire'))
     }
 }
+
 
 module.exports = {
     verifyToken: verifyToken,
