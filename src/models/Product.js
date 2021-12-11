@@ -37,9 +37,17 @@ module.exports = {
   },
 
   AddProduct(con, data, callback) {
-    con.query('INSERT INTO product(name,export_price,id_style,id_category,id_brand,create_at,sale,impot_price,description) ' +
-      'VALUES(?,?,?,?,?,NOW(),?,?,?);',
-      [data.name, data.export_price, data.id_style, data.id_category, data.id_brand, data.sale, data.impot_price, data.description], callback)
+    con.query('INSERT INTO product(name,export_price,id_style,id_category,id_brand,create_at,sale,impot_price,description) VALUES(?,?,?,?,?,NOW(),?,?,?);',
+      [
+        data.name,
+        Number(data.export_price),
+        parseInt(data.id_style),
+        parseInt(data.id_category),
+        parseInt(data.id_brand),
+        Number(data.sale),
+        Number(data.impot_price),
+        data.description
+      ], callback)
   },
 
   AddSizeProduct(con, data, callback) {

@@ -72,7 +72,6 @@ class ProductController {
   }
 
   addProductFinal(req, res) {
-
     var fileName = req.files.map(function (item, index) {
       return `uploads/` + item.filename;
     })
@@ -82,20 +81,19 @@ class ProductController {
     req.body.src = fileName;
     Product.AddProduct(req.con, req.body, (err, result) => {
       if (err){
-        return res.status(503).json(errorResponse(503, 'Server error'));
+        return res.status(503).json(errorResponse(503, 'Product error',err));
       }
       if (result) {
         var values = []
-        if (typeof req.body.size ==='object'){
-          for (let i in req.body.size) {
-            values.push([result.insertId, req.body.size[i], Number.parseInt(req.body.qnt[i])]);
-          }
-        }else {
-          values[0] = [result.insertId, req.body.size, Number.parseInt(req.body.qnt)]
+
+        const arrSize = req.body.size.split(',')
+        const arrQnt = req.body.qnt.split(',')
+        for (let i in arrSize) {
+          values.push([result.insertId, arrSize[i], Number.parseInt(arrQnt[i])]);
         }
         Product.AddSizeProduct(req.con, values, (errSize, resultSize) => {
           if (errSize){
-            return res.status(503).json(errorResponse(503, 'Server error'));
+            return res.status(503).json(errorResponse(503, 'Size error',errSize));
           }
           if (resultSize) {
             const src = [];
@@ -104,9 +102,9 @@ class ProductController {
             }
             Product.AddImageProduct(req.con, src, (errSrc, resultSrc) => {
               if (errSrc) {
-                return res.status(503).json(errorResponse(503, 'Server error'));
+                return res.status(503).json(errorResponse(503, 'Image error',errSrc));
               }
-              return res.status(201).json(errorResponse(201, 'OK'));
+              return res.status(201).json(successResponse(201, req.body));
             })
           }
         })
@@ -185,7 +183,7 @@ class ProductController {
         data.brand=resultBrand
         Product.ListStyle(req.con, (errStyle, resultStyle) => {
           if (errStyle) return res.status(503).json(errorResponse(503,'Server error'))
-          data.brand=resultStyle
+          data.style=resultStyle
           res.status(200).json(successResponse(200, data))
         })
       })

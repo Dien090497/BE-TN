@@ -82,12 +82,6 @@ app.use("/client", clientLogin);
 const clientProduct = require("./apiClient/routes/product");
 app.use("/client", clientProduct);
 
-// const cart = require("./routes/cart");
-// app.use("/carts", cart);
-
-//
-
-
 app.listen(process.env.PORT || 4444, () => {
     console.log('http://localhost:4444')
 });
