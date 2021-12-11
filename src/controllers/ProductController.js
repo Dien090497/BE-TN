@@ -1,5 +1,6 @@
 const Product = require('../models/Product');
 const {successResponse}=require('./../lib/response')
+const {errorResponse} = require("../lib/response");
 /**
  * Class PRODUCT Controller
  */
@@ -7,10 +8,10 @@ class ProductController {
 
   listProduct(req, res) {
     Product.ListProduct(req.con, (err, resultProduct) => {
-      if (err) return res.send('<h1>ERROR</h1>')
+      if (err) return res.status(503).json(errorResponse(503, 'Server error'));
       if (resultProduct) {
         Product.ListImage(req.con, (err, resultImage) => {
-          if (err) return res.send('<h1>ERROR</h1>')
+          if (err) return res.status(503).json(errorResponse(503, 'Server error'));
           if (resultImage) {
             for (var i = 0; i < resultProduct.length; i++) {
               resultProduct[i].src = []
@@ -20,15 +21,13 @@ class ProductController {
                 }
               }
             }
-            return res.render('product', {data: resultProduct})
+            return res.status(200).json(successResponse(200,{
+              products: resultProduct
+            }));
           }
         })
       }
     })
-  }
-
-  addProduct(req, res) {
-    return res.render('addproduct',{ message: req.flash('message') })
   }
 
   editProduct(req, res) {
@@ -67,21 +66,17 @@ class ProductController {
   }
 
   addProductFinal(req, res) {
+
     var fileName = req.files.map(function (item, index) {
       return `uploads/` + item.filename;
     })
     if (!fileName){
-      req.flash('message', 'Chư có hình ảnh');
-      return res.redirect('add-product')
+      return res.status(400).json(errorResponse(400, 'Image is invalid'));
     }
-    if (req.body.id_brand === '' || req.body.id_style === '' || req.body.id_category === '' || !req.body.size) {
-      req.flash('message', 'Lỗi nhập dữ liệu!');
-      return res.redirect('add-product')
-    }
+    req.body.src = fileName;
     Product.AddProduct(req.con, req.body, (err, result) => {
       if (err){
-        req.flash('message', 'Lỗi! Vui lòng thử lại');
-        return res.redirect('add-product')
+        return res.status(503).json(errorResponse(503, 'Server error'));
       }
       if (result) {
         var values = []
@@ -94,8 +89,7 @@ class ProductController {
         }
         Product.AddSizeProduct(req.con, values, (errSize, resultSize) => {
           if (errSize){
-            req.flash('message', 'Lỗi! Vui lòng thử lại');
-            return res.redirect('add-product')
+            return res.status(503).json(errorResponse(503, 'Server error'));
           }
           if (resultSize) {
             const src = [];
@@ -104,11 +98,9 @@ class ProductController {
             }
             Product.AddImageProduct(req.con, src, (errSrc, resultSrc) => {
               if (errSrc) {
-                req.flash('message', 'Lỗi! Vui lòng thử lại.');
-                return res.redirect('add-product')
+                return res.status(503).json(errorResponse(503, 'Server error'));
               }
-              req.flash('message', 'Thêm thành công!');
-              return res.redirect('add-product')
+              return res.status(201).json(errorResponse(201, 'OK'));
             })
           }
         })
@@ -165,12 +157,12 @@ class ProductController {
 
   deleteProduct(req, res) {
     Product.DeleteProduct(req.con, req.params.id_product, (err, result) => {
-      if (err) return res.send(err)
+      if (err) return res.status(503).json(errorResponse(503,'Server error'))
       Product.DeleteSizeProduct(req.con, req.params.id_product, (err, result) => {
-        if (err) return res.send(err)
+        if (err) return res.status(503).json(errorResponse(503,'Server error'))
         Product.DeleteImageProduct(req.con, req.params.id_product, (err, result) => {
           if (err) return res.send(err)
-          return res.redirect('/product')
+          return res.status(200).json(successResponse(200))
         })
       })
     })
@@ -197,6 +189,13 @@ class ProductController {
   listStyle(req, res) {
     Product.ListStyle(req.con, (err, result) => {
       if (result) return res.json(result);
+    })
+  }
+
+  size(req, res) {
+    Product.SizeProduct(req.con, req.params.listID,(err, result) => {
+      if (err) return res.status(503).json(errorResponse(503,'Server error'))
+      if (result) res.status(200).json(successResponse(200,result))
     })
   }
 }

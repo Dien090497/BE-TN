@@ -1,23 +1,25 @@
 const jwt = require('jsonwebtoken')
 require('dotenv').config();
+const {
+    successResponse,
+    errorResponse
+} = require('../lib/response');
 
 function verifyToken(req, res, next) {
-    var token = req.cookies.token;
+    if (!req.headers.authorization) return res.status(401).json(errorResponse(401,'Token is exit'))
+    var token = req.headers.authorization.split(' ')[1];
     if (token) {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function(err, decoded) {
             if (err) {
-                req.flash('message', 'Hết hạn đăng nhập!')
-                res.redirect('/',)
+                return res.status(401).json(errorResponse(401,'Token is expire'))
             }
             if (decoded){
                 req.auth = decoded.email;
-                console.log("Verify Success!")
                 next();
             }
         });
     }else {
-      req.flash('message', 'Hết hạn đăng nhập!')
-      res.redirect('/',)
+        return res.status(401).json(errorResponse(401,'Token is expire'))
     }
 }
 

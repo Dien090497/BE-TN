@@ -5,9 +5,13 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
+const cors = require('cors')
 require('dotenv').config()
 
 const app = express();
+
+app.use(cors())
+
 app.engine('handlebars', exphdb());
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'resources/views'))
@@ -84,6 +88,6 @@ app.use("/client", clientProduct);
 //
 
 
-app.listen(process.env.PORT || 3002, () => {
-    console.log('http://localhost:3002')
+app.listen(process.env.PORT || 4444, () => {
+    console.log('http://localhost:4444')
 });

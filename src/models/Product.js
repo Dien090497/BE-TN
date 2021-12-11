@@ -26,8 +26,9 @@ module.exports = {
     con.query('SELECT * FROM ' + table_name, callback)
   },
 
-  SizeProduct(con, id_product, callback) {
-    con.query('SELECT * FROM size WHERE id_product = ?;', id_product, callback)
+  SizeProduct(con, arr, callback) {
+    const listID = arr.split(',');
+    con.query('SELECT id_product,size_name,qnt FROM size WHERE id_product IN ('+ con.escape(listID) +');', callback)
   },
 
   AddProduct(con, data, callback) {

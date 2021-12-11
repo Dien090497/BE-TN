@@ -1,31 +1,27 @@
 const jwt = require('jsonwebtoken')
 const Admin = require('../models/Admin')
 const md5 = require('md5');
+const { successResponse, errorResponse } = require('../lib/response');
 
 /**
  * Class Auth Controller
  */
 class LoginController {
-    login(req, res) {
-        res.render('login', { layout: false, message: req.flash('message') });
-    }
 
     loginFinal(req, res) {
         var password = md5(req.body.password);
         Admin.getAdmin(req.con, [req.body.email, password],
             (err, result) => {
                 if (err) {
-                  req.flash('message', 'Lỗi server! Vui lòng thử lại sau')
-                  return res.redirect('/');
+                  return res.status(503).json(errorResponse(503, 'Server error'));
                 }
                 if (result[0] === undefined || result[0] == null) {
-                    req.flash('message', 'Sai tài khoản hoặc mật khẩu!')
-                    return res.redirect('/');
+                    return res.status(401).json(errorResponse(401,'Not found'));
                 } else {
                     const token = jwt.sign({ email: result[0].email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '2d' });
-                    res.cookie('token', token)
-                    res.cookie('menu', 'product')
-                    return res.redirect('/product');
+                    return res.status(200).json(successResponse(200,{
+                        token: token,
+                    }));
                 }
 
             })

@@ -29,15 +29,15 @@ const controller = new ProductController();
 
 router.get("/",(req, res) => controller.listProduct(req, res));
 
-router.get("/add-product", (req, res) => controller.addProduct(req, res));
-
-router.get("/edit-product/:id_product",Auth.verifyToken ,(req, res) => controller.editProduct(req, res));
+router.get("/size/:listID",(req, res) => controller.size(req, res));
 
 router.post("/add-product",Auth.verifyToken ,upload.array('pictureProduct', 30), (req, res) => controller.addProductFinal(req, res));
 
+router.put("/edit-product/:id_product",Auth.verifyToken ,(req, res) => controller.editProduct(req, res));
+
 router.post("/edit-product/:id_product",Auth.verifyToken , upload.array('pictureProduct', 30), (req, res) => controller.editProductFinal(req, res));
 
-router.post("/delete-product/:id_product" ,Auth.verifyToken , (req, res) => controller.deleteProduct(req, res));
+router.delete("/delete-product/:id_product" ,Auth.verifyToken , (req, res) => controller.deleteProduct(req, res));
 
 router.get("/brand",(req, res) => controller.listBrand(req, res));
 
