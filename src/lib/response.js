@@ -1,22 +1,22 @@
 'use strict';
 
-const errorResponse = (status, message) => {
+const errorResponse = (status, message, err) => {
   let errorResponse;
   switch (status) {
     case 400:
-      errorResponse = Object.assign({}, { success: false, status, message: message || 'paramMissing' });
+      errorResponse = Object.assign({}, { success: false, status, message: message || 'paramMissing', error: err });
       break;
     case 401:
-      errorResponse = Object.assign({}, { success: false, status, message: message || 'unauthorizedRequest' });
+      errorResponse = Object.assign({}, { success: false, status, message: message || 'unauthorizedRequest', error: err });
       break;
     case 403:
-      errorResponse = Object.assign({}, { success: false, status, message: message || 'forbidden' });
+      errorResponse = Object.assign({}, { success: false, status, message: message || 'forbidden', error: err });
       break;
     case 404:
-      errorResponse = Object.assign({}, { success: false, status, message: message || 'notFound' });
+      errorResponse = Object.assign({}, { success: false, status, message: message || 'notFound', error: err });
       break;
     default:
-      errorResponse = Object.assign({}, { success: false, status: status || 520, message: message || 'errorFound' });
+      errorResponse = Object.assign({}, { success: false, status: status || 520, message: message || 'errorFound', error: err });
       break;
   }
   return errorResponse;

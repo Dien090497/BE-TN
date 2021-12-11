@@ -7,8 +7,8 @@ const {errorResponse} = require("../lib/response");
 class ProductController {
 
   listProduct(req, res) {
-    Product.ListProduct(req.con, (err, resultProduct) => {
-      if (err) return res.status(503).json(errorResponse(503, 'Server error'));
+    Product.ListProduct(req.con,[req.query.page,req.query.size] ,(err, resultProduct) => {
+      if (err) return res.status(503).json(errorResponse(503, 'Server error',err));
       if (resultProduct) {
         Product.ListImage(req.con, (err, resultImage) => {
           if (err) return res.status(503).json(errorResponse(503, 'Server error'));
@@ -21,9 +21,15 @@ class ProductController {
                 }
               }
             }
-            return res.status(200).json(successResponse(200,{
-              products: resultProduct
-            }));
+            Product.countProduct(req.con,(err, count)=>{
+              if (err) return res.status(503).json(errorResponse(503, 'Server error'));
+              return res.status(200).json(successResponse(200,{
+                count: count[0].count,
+                products: resultProduct
+              }));
+
+            })
+
           }
         })
       }
@@ -169,8 +175,31 @@ class ProductController {
 
   }
 
+  info(req, res){
+    let data = {}
+    Product.ListCategory(req.con, (errCategory, resultCategory) => {
+      if (errCategory) return res.status(503).json(errorResponse(503,'Server error'))
+      data.category = resultCategory
+      Product.ListBrand(req.con, (errBrand, resultBrand) => {
+        if (errBrand) return res.status(503).json(errorResponse(503,'Server error'))
+        data.brand=resultBrand
+        Product.ListStyle(req.con, (errStyle, resultStyle) => {
+          if (errStyle) return res.status(503).json(errorResponse(503,'Server error'))
+          data.brand=resultStyle
+          res.status(200).json(successResponse(200, data))
+        })
+      })
+    })
+  }
+
   listBrand(req, res) {
     Product.ListBrand(req.con, (err, result) => {
+      if (result) return res.json(result);
+    })
+  }
+
+  listStyle(req, res) {
+    Product.ListStyle(req.con, (err, result) => {
       if (result) return res.json(result);
     })
   }
@@ -184,11 +213,6 @@ class ProductController {
   listProductApi(req, res) {
     Product.ListProduct(req.con, (err, result) => {
       if (result) return res.json(result)
-    })
-  }
-  listStyle(req, res) {
-    Product.ListStyle(req.con, (err, result) => {
-      if (result) return res.json(result);
     })
   }
 

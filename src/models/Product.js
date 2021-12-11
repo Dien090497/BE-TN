@@ -1,11 +1,16 @@
 module.exports = {
 
-  ListProduct(con, callback) {
+  ListProduct(con,[page, pageSize], callback) {
     con.query('SELECT product.*, seasion.style_name,category.name_category,brand.brand_name FROM product ' +
       'INNER JOIN seasion ON product.id_style = seasion.id_style ' +
       'INNER JOIN category ON product.id_category = category.id_category ' +
-      'INNER JOIN brand on product.id_brand = brand.id_brand', callback)
+      'INNER JOIN brand on product.id_brand = brand.id_brand ORDER BY id_product limit '+page*pageSize+','+pageSize, callback)
   },
+
+  countProduct(con, callback){
+    con.query('SELECT COUNT(*) as count FROM product', callback)
+  },
+
   ListImage(con, callback) {
     con.query('SELECT id_product,src FROM image where image_type="product"', callback)
   },

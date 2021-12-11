@@ -29,6 +29,8 @@ const controller = new ProductController();
 
 router.get("/",(req, res) => controller.listProduct(req, res));
 
+router.get("/info",(req, res) => controller.info(req, res));
+
 router.get("/size/:listID",(req, res) => controller.size(req, res));
 
 router.post("/add-product",Auth.verifyToken ,upload.array('pictureProduct', 30), (req, res) => controller.addProductFinal(req, res));
