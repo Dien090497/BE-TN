@@ -78,14 +78,7 @@ class LoginController {
     else if (data.login_type === "PHONENUMBER") {
       User.LoginPhoneNumber(req.con, [data.id_user, data.password], (err, result) => {
         if (err) {
-          const api = {
-            error_code: 400,
-            message: 'failed',
-            data: {},
-            err: err,
-            token: ''
-          }
-          return res.json({api})
+          return  res.status(400).json(errorResponse({message:'err'}))
         }
         if (result) {
           if (result[0]) {
@@ -94,20 +87,12 @@ class LoginController {
             //   return  console.log('err',err)
             //  }
             //   console.log(result1.token)
-              return  res.status(201).json(successResponse(201,[result[0]]))
+            console.log(result)
+              return  res.status(201).json(successResponse(201,result[0]))
             // })
 
           } else {
-            const api = {
-              error_code: 400,
-              message: 'failed',
-              data: {},
-              err: {
-                error_message: "ACCOUNT_DOES_NOT_EXIST"
-              },
-              token: '',
-            }
-            return res.json({api})
+            return  res.status(400).json(errorResponse({message:'err'}))
           }
         }
       })
