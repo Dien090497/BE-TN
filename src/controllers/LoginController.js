@@ -10,6 +10,7 @@ class LoginController {
 
     loginFinal(req, res) {
       res.json({data:123123213});
+      
         var password = md5(req.body.password);
         Admin.getAdmin(req.con, [req.body.email, password],
             (err, result) => {
