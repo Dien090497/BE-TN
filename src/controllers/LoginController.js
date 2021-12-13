@@ -15,6 +15,7 @@ class LoginController {
                 if (err) {
                   return res.status(503).json(errorResponse(503, 'Server error'));
                 }
+                console.log(result)
                 if (result[0] === undefined || result[0] == null) {
                     return res.status(401).json(errorResponse(401,'Not found'));
                 } else {
