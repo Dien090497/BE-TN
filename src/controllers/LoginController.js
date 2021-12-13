@@ -18,7 +18,7 @@ class LoginController {
                 if (result[0] === undefined || result[0] == null) {
                     return res.status(401).json(errorResponse(401,'Not found'));
                 } else {
-                    const token = jwt.sign({ email: result[0].email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '2d' });
+                    const token = jwt.sign({ email: result[0].email }, 'dunghoivisao123', { expiresIn: '2d' });
                     return res.status(200).json(successResponse(200,{
                         token: token,
                         id_admin: result[0].id_admin
