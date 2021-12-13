@@ -115,7 +115,7 @@ class LoginController {
   register(req, res) {
     var password = md5(req.body.password);
     var name=req.body.name;
-    const token = jwt.sign({name},process.env.ACCESS_TOKEN_SECRET, {expiresIn: '2d'})
+    const token = jwt.sign({name},'dunghoivisao123', {expiresIn: '2d'})
 
     const data = {
       id_user: req.body.id_user,
