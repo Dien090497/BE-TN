@@ -9,13 +9,13 @@ const { successResponse, errorResponse } = require('../lib/response');
 class LoginController {
 
     loginFinal(req, res) {
+      res.json({data:123123213});
         var password = md5(req.body.password);
         Admin.getAdmin(req.con, [req.body.email, password],
             (err, result) => {
                 if (err) {
                   return res.status(503).json(errorResponse(503, 'Server error'));
                 }
-                console.log(result)
                 if (result[0] === undefined || result[0] == null) {
                     return res.status(401).json(errorResponse(401,'Not found'));
                 } else {
