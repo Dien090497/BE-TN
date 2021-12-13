@@ -35,7 +35,7 @@ router.get("/size/:listID",(req, res) => controller.size(req, res));
 
 router.put("/add-product",Auth.verifyToken ,upload.array('pictureProduct', 30), (req, res) => controller.addProductFinal(req, res));
 
-router.post("/edit-product/:id_product",Auth.verifyToken , upload.array('pictureProduct', 30), (req, res) => controller.editProductFinal(req, res));
+router.put("/edit-product/:id_product",Auth.verifyToken , upload.array('pictureProduct', 30), (req, res) => controller.editProductFinal(req, res));
 
 router.delete("/delete-product/:id_product" ,Auth.verifyToken , (req, res) => controller.deleteProduct(req, res));
 

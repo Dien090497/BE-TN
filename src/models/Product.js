@@ -61,15 +61,27 @@ module.exports = {
 
 
   UpdateProduct(con, data, callback) {
-    con.query('UPDATE product ' +
-      'set name =?, export_price =? ,impot_price=?, sale=?,id_category=?, id_style=?, id_brand=?, description=? where id_product =?',
-      [data.name, data.export_price, data.impot_price,data.sale, data.id_category,  data.id_style, data.id_brand, data.description, data.id_product], callback)
+    con.query('UPDATE product set ' +
+      (data.name? 'name ="'+data.name+'", ' :'') +
+      (data.export_price ? 'export_price = '+data.export_price+' ,' : '') +
+      (data.impot_price ? 'impot_price= '+data.impot_price+',' : '') +
+      (data.sale ? ' sale= '+data.sale+',' : '') +
+      (data.id_category ? 'id_category= '+data.id_category+', ' : '') +
+      (data.id_style ? 'id_style= '+data.id_style+', ' : '') +
+      (data.id_brand ? 'id_brand= '+data.id_brand+',' : '') +
+      (data.description ? 'description= "'+data.description+'" ' :  'description='+'"Không có miêu tả"'+' ') +
+      'where id_product =?',
+      [parseInt( data.id_product)], callback)
   },
   DeleteSize(con, data, callback) {
     con.query('DELETE FROM size WHERE id_product ='+data.id_product,callback)
   },
+
+  // DeleteImage(con, data, callback) {
+  //   con.query('DELETE FROM image WHERE src in (?)',[data],callback)
+  // },
   DeleteImage(con, data, callback) {
-    con.query('DELETE FROM image WHERE src in (?)',[data],callback)
+    con.query('DELETE FROM image WHERE id_product = ?',[data.id_product],callback)
   },
 
   DeleteProduct(con,id_product,callback){
@@ -80,6 +92,10 @@ module.exports = {
   },
   DeleteImageProduct(con,id_product,callback){
     con.query('DELETE FROM product WHERE id_product ='+ id_product,callback);
+  },
+
+  FindProductInBill(con,id_product,callback){
+    con.query('SELECT * FROM bill_detail where id_product ='+ id_product,callback);
   },
 
   ListBrand(con,callback){

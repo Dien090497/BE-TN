@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const Auth = require('../middleware/Auth');
 
 /**
  * Routing for Auth
@@ -7,11 +8,14 @@ const router = express.Router();
 const OrderController = require("../controllers/OrderController");
 const controller = new OrderController();
 
-router.get("/", controller.getListOrder);
+router.get("/", (req, res) =>controller.listOrder(res,req));
 
-router.get("/detail", controller.getDetailOrder);
+router.post("/", (req,res)=>controller.setOrder(res,req));
 
-// router.post("/login", controller.loginFinal);
+router.get("/detail-order/:id_bill", (req, res) =>controller.detailOrder(res,req));
 
-router.get('/list-order',controller.getListOrder);
+router.put("/update-order", (req, res) =>controller.editStatusOrder(res,req));
+
+router.put("/update-order/address/:id_bill", (req, res) =>controller.editAddress(res,req));
+
 module.exports = router;

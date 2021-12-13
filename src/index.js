@@ -62,6 +62,10 @@ app.use("/news", news);
 const order = require("./routes/order");
 app.use("/order", order);
 
+// //Notification
+// const notification = require("./routes/notification");
+// app.use("/push", notification);
+
 //Administrator
 const administrator = require("./routes/administrator");
 app.use("/administrator", administrator);
@@ -73,7 +77,6 @@ app.use("/help", help);
 //about us
 const aboutUs = require("./routes/about-us");
 app.use("/about-us", aboutUs);
-
 
 // Routing Client
 const clientLogin = require("./apiClient/routes/login");
