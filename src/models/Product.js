@@ -1,11 +1,16 @@
 module.exports = {
 
-  ListProduct(con, callback) {
+  ListProduct(con,[page, pageSize], callback) {
     con.query('SELECT product.*, seasion.style_name,category.name_category,brand.brand_name FROM product ' +
       'INNER JOIN seasion ON product.id_style = seasion.id_style ' +
       'INNER JOIN category ON product.id_category = category.id_category ' +
-      'INNER JOIN brand on product.id_brand = brand.id_brand', callback)
+      'INNER JOIN brand on product.id_brand = brand.id_brand ORDER BY id_product limit '+page*pageSize+','+pageSize, callback)
   },
+
+  countProduct(con, callback){
+    con.query('SELECT COUNT(*) as count FROM product', callback)
+  },
+
   ListImage(con, callback) {
     con.query('SELECT id_product,src FROM image where image_type="product"', callback)
   },
@@ -32,9 +37,17 @@ module.exports = {
   },
 
   AddProduct(con, data, callback) {
-    con.query('INSERT INTO product(name,export_price,id_style,id_category,id_brand,create_at,sale,impot_price,description) ' +
-      'VALUES(?,?,?,?,?,NOW(),?,?,?);',
-      [data.name, data.export_price, data.id_style, data.id_category, data.id_brand, data.sale, data.impot_price, data.description], callback)
+    con.query('INSERT INTO product(name,export_price,id_style,id_category,id_brand,create_at,sale,impot_price,description) VALUES(?,?,?,?,?,NOW(),?,?,?);',
+      [
+        data.name,
+        Number(data.export_price),
+        parseInt(data.id_style),
+        parseInt(data.id_category),
+        parseInt(data.id_brand),
+        Number(data.sale),
+        Number(data.impot_price),
+        data.description
+      ], callback)
   },
 
   AddSizeProduct(con, data, callback) {
@@ -48,15 +61,27 @@ module.exports = {
 
 
   UpdateProduct(con, data, callback) {
-    con.query('UPDATE product ' +
-      'set name =?, export_price =? ,impot_price=?, sale=?,id_category=?, id_style=?, id_brand=?, description=? where id_product =?',
-      [data.name, data.export_price, data.impot_price,data.sale, data.id_category,  data.id_style, data.id_brand, data.description, data.id_product], callback)
+    con.query('UPDATE product set ' +
+      (data.name? 'name ="'+data.name+'", ' :'') +
+      (data.export_price ? 'export_price = '+data.export_price+' ,' : '') +
+      (data.impot_price ? 'impot_price= '+data.impot_price+',' : '') +
+      (data.sale ? ' sale= '+data.sale+',' : '') +
+      (data.id_category ? 'id_category= '+data.id_category+', ' : '') +
+      (data.id_style ? 'id_style= '+data.id_style+', ' : '') +
+      (data.id_brand ? 'id_brand= '+data.id_brand+',' : '') +
+      (data.description ? 'description= "'+data.description+'" ' :  'description='+'"Không có miêu tả"'+' ') +
+      'where id_product =?',
+      [parseInt( data.id_product)], callback)
   },
   DeleteSize(con, data, callback) {
     con.query('DELETE FROM size WHERE id_product ='+data.id_product,callback)
   },
+
+  // DeleteImage(con, data, callback) {
+  //   con.query('DELETE FROM image WHERE src in (?)',[data],callback)
+  // },
   DeleteImage(con, data, callback) {
-    con.query('DELETE FROM image WHERE src in (?)',[data],callback)
+    con.query('DELETE FROM image WHERE id_product = ?',[data.id_product],callback)
   },
 
   DeleteProduct(con,id_product,callback){
@@ -67,6 +92,10 @@ module.exports = {
   },
   DeleteImageProduct(con,id_product,callback){
     con.query('DELETE FROM product WHERE id_product ='+ id_product,callback);
+  },
+
+  FindProductInBill(con,id_product,callback){
+    con.query('SELECT * FROM bill_detail where id_product ='+ id_product,callback);
   },
 
   ListBrand(con,callback){

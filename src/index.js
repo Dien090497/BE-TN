@@ -62,6 +62,10 @@ app.use("/news", news);
 const order = require("./routes/order");
 app.use("/order", order);
 
+// //Notification
+// const notification = require("./routes/notification");
+// app.use("/push", notification);
+
 //Administrator
 const administrator = require("./routes/administrator");
 app.use("/administrator", administrator);
@@ -82,12 +86,6 @@ app.use("/client", clientLogin);
 const clientProduct = require("./apiClient/routes/product");
 app.use("/client", clientProduct);
 
-// const cart = require("./routes/cart");
-// app.use("/carts", cart);
-
-//
-
-
-app.listen(process.env.PORT || 3001, () => {
-    console.log('http://localhost:3001')
+app.listen(process.env.PORT || 4444, () => {
+    console.log('http://localhost:4444')
 });

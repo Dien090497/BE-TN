@@ -21,11 +21,20 @@ class LoginController {
                     const token = jwt.sign({ email: result[0].email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '2d' });
                     return res.status(200).json(successResponse(200,{
                         token: token,
+                        id_admin: result[0].id_admin
                     }));
                 }
 
             })
 
+    }
+
+    setTokenFirebase(req,res){
+      if (!req.body.id_admin && !req.body.token) return res.status(400).json(errorResponse(400));
+      Admin.SetToken(req.con,[req.body.id_admin,req.body.token],(err, data)=>{
+        if (err) return res.status(503).json(errorResponse(503, 'Delete Img Error', err));
+        return res.status(204).json(successResponse(204, data));
+      })
     }
 
 }
