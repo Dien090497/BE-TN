@@ -163,26 +163,23 @@ class ProductController {
   }
 
   listBrand(req, res) {
-    Product.ListBrand(req.con, (err, result) => {
-      if (result) return res.json(result);
-    })
-  }
-
-  listStyle(req, res) {
-    Product.ListStyle(req.con, (err, result) => {
-      if (result) return res.json(result);
+    Product.ListBrandProduct(req.con, [req.params.id_brand,req.query.page,req.query.size],(err, result) => {
+      if (err) return res.status(503).json(errorResponse(503,'Img error',err))
+      return res.status(200).json(successResponse(200, {result}))
     })
   }
 
   listCategory(req, res) {
-    Product.ListCategory(req.con, (err, result) => {
-      if (result) return res.json(result);
+    Product.ListCategoryProduct(req.con, [req.params.id_category,req.query.page,req.query.size],(err, result) => {
+      if (err) return res.status(503).json(errorResponse(503,'Img error',err))
+      return res.status(200).json(successResponse(200, {result}))
     })
   }
 
-  listProductApi(req, res) {
-    Product.ListProduct(req.con, (err, result) => {
-      if (result) return res.json(result)
+  listStyle(req, res) {
+    Product.ListStyleProduct(req.con, [req.params.id_style,req.query.page,req.query.size],(err, result) => {
+      if (err) return res.status(503).json(errorResponse(503,'Img error',err))
+      return res.status(200).json(successResponse(200, {result}))
     })
   }
 

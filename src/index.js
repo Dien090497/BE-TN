@@ -12,6 +12,16 @@ const app = express();
 
 app.use(cors())
 
+
+const admin = require("firebase-admin");
+const serviceAccount = require("./few-tn-firebase-adminsdk-cdl0t-01a6a0cb00.json");
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://firebase-adminsdk-cdl0t@few-tn.iam.gserviceaccount.com"
+});
+
+
 app.engine('handlebars', exphdb());
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'resources/views'))

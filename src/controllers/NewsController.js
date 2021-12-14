@@ -1,73 +1,75 @@
 const News = require('../models/News');
+const {successResponse, errorResponse} = require("../lib/response");
+
+const admin = require("firebase-admin");
+const User = require("../apiClient/models/User");
+
+const options = {
+    priority: 'high',
+    timeToLive: 60 * 60 * 24, // 1 day
+};
 
 class NewsController {
     getNews(req, res) {
-        res.render('news')
+        News.GetAllNews(req.con, [req.query.page,req.query.size,null], (err, data)=>{
+            if (err) return res.status(503).json(errorResponse(503,null,err));
+            News.countNews(req.con,(e, count)=>{
+                return res.status(201).json(successResponse(210,{
+                    count: count[0].count,
+                    news: data
+                }));
+            })
+        })
+    }
+
+    getInfoNews(req, res) {
+        News.GetAllNews(req.con, [0,0,req.params.id_news], (err, data)=>{
+            if (err) return res.status(503).json(errorResponse(503,null,err));
+            return res.status(200).json(successResponse(200,data[0]));
+        })
     }
 
     addNews(req, res) {
-        res.render('addnews',{ message: req.flash('message')})
-    }
-
-    addNewsFinally(req, res) {
-      req.body.srcImg = req.files.map(function (item, index) {
-        return `uploads/` + item.filename;
-      });
-      let data =[];
-      if (typeof req.body.content ==='string'){
-          data[0] =[req.body.content,req.body.srcImg[0]]
-      }else {
-        for (let i in req.body.content){
-          data.push([req.body.content[i],req.body.srcImg[i]])
-        }
-      }
-      const title = data[0];
-
-      News.AddNews(req.con,[title[0], title[1]], (err,result)=>{
-        if (err){
-          req.flash('message', 'Lỗi server. Vui lòng thử lại!');
-          return res.redirect('add-news')
-        }
-        if (result){
-          const config = [];
-          data.map((item,i)=>{
-            i>0 ? config.push([item[0],item[1],result.insertId]) : null
-          })
-          News.AddContentNews(req.con,config,(err,resultContent) =>{
-            if (err){
-              req.flash('message', 'Lỗi server. Vui lòng thử lại!');
-              return res.redirect('add-news')
-            }
-            req.flash('message', 'Thêm thành công');
-            return res.redirect('add-news')
-          })
-
-        }
+      req.body.srcImg = `uploads/` + req.file.filename;
+        News.AddNews(req.con,[req.body.title,req.body.srcImg,req.body.content],(e,data)=>{
+          if (e) return res.status(503).json(errorResponse(503,null,e));
+            User.getFirebaseToken(req.con,null,(e,token) =>{
+              if (e) return res.status(503).json(errorResponse(503, 'Token Firebase error',e));
+              const tokenFirebase=[];
+              token.map(obj=>{
+                tokenFirebase.push(obj.firebase_token)
+              })
+              const payload = {
+                    notification: {
+                        title: 'Hot Hot Hot!!!',
+                        body: req.body.title,
+                    }
+                };
+                admin.messaging().sendToDevice(tokenFirebase, payload , options)
+                  .then((response)=>{
+                      console.log('Send Message success!!!', response)
+                  }).catch((err)=>{
+                    console.log('Send Message error!!!', err)
+                });
+                return res.status(200).json(successResponse(200));
+            })
       })
     }
 
-
-    editNews(req, res) {
-        res.render('edit-news')
+    deleteNews(req, res){
+        News.DeleteNews(req.con,req.params.id_news,(e, result)=>{
+            if (e) return res.status(503).json(errorResponse(503,null,e));
+            return res.status(200).json(successResponse(200,result));
+        })
     }
 
-    editNewsFinally(req, res) {
-        try {
-            upload(req, res, function(err) {
-                if (err) {
-                    res.render('upload');
-                }
-            })
-        } catch (err) {
-            console.log(err)
-        } finally {
-            var fileName = req.files.map(function(item, index) {
-                return `uploads/` + item.filename;
-            })
-            var data = req.body;
-            data.srcImg = fileName;
-            res.send(data);
-        }
+    editNews(req, res) {
+        var data = req.body;
+        if (req.file) data.image = `uploads/` + req.file.filename;
+        News.UpdateNews(req.con,data,(err, data)=>{
+            if (err) return res.status(503).json(errorResponse(503,null,err));
+            return res.status(200).json(successResponse(200,data));
+        })
     }
 }
 

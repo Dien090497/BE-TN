@@ -3,12 +3,8 @@ const Admin = require("../models/Admin");
 const {errorResponse, successResponse} = require("../lib/response");
 
 const admin = require("firebase-admin");
-const serviceAccount = require("../few-tn-firebase-adminsdk-cdl0t-01a6a0cb00.json");
+const User = require("../apiClient/models/User");
 
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://firebase-adminsdk-cdl0t@few-tn.iam.gserviceaccount.com"
-});
 const options = {
     priority: 'high',
     timeToLive: 60 * 60 * 24, // 1 day
@@ -63,9 +59,9 @@ class OrderController {
                     admin.messaging().sendToDevice(tokenFirebase, payload , options)
                       .then((response)=>{
                           console.log('Send Message success!!!', response)
+                          add
                       }).catch((err)=>{
                         console.log('Send Message error!!!', err)
-
                     });
                     return res.status(200).json(successResponse(200));
                 })
@@ -76,7 +72,23 @@ class OrderController {
     editStatusOrder(res, req){
         Order.updateStatus(req.con,[req.body.id_bill, req.body.status],(err, result)=>{
             if (err) return res.status(503).json(errorResponse(503, 'Bill Detail error',err));
-            return res.status(200).json(successResponse(200));
+            User.getFirebaseToken(req.con, req.body.id_bill,(e,tokens)=>{
+                const tokenFirebase = []
+                tokenFirebase.push(tokens[0].firebase_token)
+                const payload = {
+                    notification: {
+                        title: 'Cập nhật đơn hàng',
+                        body: req.body.status==='0' ? 'Đơn hàng đang chờ xử lý!!!' : req.body.status==='1' ? 'Đơn hàng DH' +req.body.id_bill +' đang được giao đến bạn!!!' : req.body.status==='2' ? 'Thanh toán thành công!!!' : 'Đơn hàng HD'+req.body.id_bill  +' đã hủy!!!'
+                    }
+                };
+                admin.messaging().sendToDevice(tokenFirebase, payload , options)
+                  .then((response)=>{
+                      console.log('Send Message success!!!', response)
+                  }).catch((err)=>{
+                    console.log('Send Message error!!!', err)
+                });
+                return res.status(200).json(successResponse(200));
+            })
         })
     }
 

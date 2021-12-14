@@ -4,7 +4,7 @@ module.exports = {
     con.query('SELECT product.*, seasion.style_name,category.name_category,brand.brand_name FROM product ' +
       'INNER JOIN seasion ON product.id_style = seasion.id_style ' +
       'INNER JOIN category ON product.id_category = category.id_category ' +
-      'INNER JOIN brand on product.id_brand = brand.id_brand ORDER BY id_product limit '+page*pageSize+','+pageSize, callback)
+      'INNER JOIN brand on product.id_brand = brand.id_brand ORDER BY create_at DESC limit '+page*pageSize+','+pageSize, callback)
   },
 
   countProduct(con, callback){
@@ -73,6 +73,7 @@ module.exports = {
       'where id_product =?',
       [parseInt( data.id_product)], callback)
   },
+
   DeleteSize(con, data, callback) {
     con.query('DELETE FROM size WHERE id_product ='+data.id_product,callback)
   },
@@ -108,5 +109,18 @@ module.exports = {
 
   ListStyle(con,callback){
     con.query('SELECT * FROM seasion',callback);
+  },
+
+
+  ListBrandProduct(con,[id_brand,page,size],callback){
+    con.query('SELECT * FROM product WHERE id_brand = '+id_brand+' ORDER BY create_at DESC limit '+page*size+','+size,callback);
+  },
+
+  ListCategoryProduct(con,[id_category,page,size],callback){
+    con.query('SELECT * FROM product WHERE id_category = '+id_category+' ORDER BY create_at DESC limit '+page*size+','+size,callback);
+  },
+
+  ListStyleProduct(con,[id_style,page,size],callback){
+    con.query('SELECT * FROM product WHERE id_style = '+id_style+' ORDER BY create_at DESC limit '+page*size+','+size,callback);
   },
 }

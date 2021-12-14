@@ -39,10 +39,10 @@ router.put("/edit-product/:id_product",Auth.verifyToken , upload.array('pictureP
 
 router.delete("/delete-product/:id_product" ,Auth.verifyToken , (req, res) => controller.deleteProduct(req, res));
 
-router.get("/brand",(req, res) => controller.listBrand(req, res));
+router.get("/brand/:id_brand",(req, res) => controller.listBrand(req, res));
 
-router.get("/category",(req, res) => controller.listCategory(req, res));
+router.get("/category/:id_category",(req, res) => controller.listCategory(req, res));
 
-router.get("/style",(req, res) => controller.listStyle(req, res));
+router.get("/style/:id_style",(req, res) => controller.listStyle(req, res));
 
 module.exports = router;
