@@ -37,7 +37,7 @@ class AdministratorController {
         if (err) return res.status(503).json(errorResponse(503, 'Update user admin err',err));
         Admin.setArmin(req.con,[req.body.action,req.body.name,req.body.id_user,req.body.password],(error,stt)=>{
           if (error) return res.status(503).json(errorResponse(503, 'Update admin err',error));
-          return res.status(200).json(successResponse(200));
+          return res.status(200).json(successResponse(200,{message: 'OK'}));
         })
       })
     })
