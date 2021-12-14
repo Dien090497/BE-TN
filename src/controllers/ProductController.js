@@ -165,21 +165,66 @@ class ProductController {
   listBrand(req, res) {
     Product.ListBrandProduct(req.con, [req.params.id_brand,req.query.page,req.query.size],(err, result) => {
       if (err) return res.status(503).json(errorResponse(503,'Img error',err))
-      return res.status(200).json(successResponse(200, {result}))
+      Product.ListImage(req.con, (errImg, resultImage) => {
+        if (errImg) return res.status(503).json(errorResponse(503, 'Server error',errImg));
+        if (resultImage) {
+          for (var i = 0; i < result.length; i++) {
+            result[i].src = []
+            for (var j = 0; j < resultImage.length; j++) {
+              if (result[i].id_product === resultImage[j].id_product) {
+                result[i].src.push(resultImage[j].src);
+              }
+            }
+          }
+          return res.status(200).json(successResponse(200,{
+            products: result
+          }));
+        }
+      })
     })
   }
 
   listCategory(req, res) {
     Product.ListCategoryProduct(req.con, [req.params.id_category,req.query.page,req.query.size],(err, result) => {
       if (err) return res.status(503).json(errorResponse(503,'Img error',err))
-      return res.status(200).json(successResponse(200, {result}))
+      Product.ListImage(req.con, (errImg, resultImage) => {
+        if (errImg) return res.status(503).json(errorResponse(503, 'Server error',errImg));
+        if (resultImage) {
+          for (var i = 0; i < result.length; i++) {
+            result[i].src = []
+            for (var j = 0; j < resultImage.length; j++) {
+              if (result[i].id_product === resultImage[j].id_product) {
+                result[i].src.push(resultImage[j].src);
+              }
+            }
+          }
+          return res.status(200).json(successResponse(200,{
+            products: result
+          }));
+        }
+      })
     })
   }
 
   listStyle(req, res) {
     Product.ListStyleProduct(req.con, [req.params.id_style,req.query.page,req.query.size],(err, result) => {
       if (err) return res.status(503).json(errorResponse(503,'Img error',err))
-      return res.status(200).json(successResponse(200, {result}))
+      Product.ListImage(req.con, (errImg, resultImage) => {
+        if (errImg) return res.status(503).json(errorResponse(503, 'Server error',errImg));
+        if (resultImage) {
+          for (var i = 0; i < result.length; i++) {
+            result[i].src = []
+            for (var j = 0; j < resultImage.length; j++) {
+              if (result[i].id_product === resultImage[j].id_product) {
+                result[i].src.push(resultImage[j].src);
+              }
+            }
+          }
+          return res.status(200).json(successResponse(200,{
+            products: result
+          }));
+        }
+      })
     })
   }
 
