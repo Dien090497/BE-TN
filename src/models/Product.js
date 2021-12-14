@@ -22,8 +22,8 @@ module.exports = {
     con.query('SELECT id_product,src FROM image where image_type="product"', callback)
   },
 
-  ProductImage(con, callback) {
-    con.query('SELECT src FROM image where image_type="product"', callback)
+  ProductImage(con, id_product ,callback) {
+    con.query('SELECT src FROM image where id_product = '+id_product, callback)
   },
 
   DetailProduct(con, id_product, callback) {

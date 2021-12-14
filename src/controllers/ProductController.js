@@ -37,21 +37,19 @@ class ProductController {
   }
 
   getProduct(req, res){
+
     Product.Product(req.con,[req.params.id_product] ,(err, resultProduct) => {
       if (err) return res.status(503).json(errorResponse(503, 'Server error',err));
       if (resultProduct) {
-        Product.ListImage(req.con, (err, resultImage) => {
-          if (err) return res.status(503).json(errorResponse(503, 'Server error'));
-          if (resultImage) {
-            for (var i = 0; i < resultProduct.length; i++) {
-              resultProduct[i].src = []
-              for (var j = 0; j < resultImage.length; j++) {
-                if (resultProduct[i].id_product === resultImage[j].id_product) {
-                  resultProduct[i].src.push(resultImage[j].src);
-                }
-              }
-            }
-          }
+        Product.ProductImage(req.con, req.params.id_product ,(errImg, resultImage) => {
+          if (errImg) return res.status(503).json(errorResponse(503, 'Server error',errImg));
+          const image =[]
+          resultImage.map(obj=>{
+            image.push(obj.src)
+          })
+          const data = resultProduct[0]
+          data.image = image
+          return res.status(201).json(successResponse(201, data));
         })
       }
     })

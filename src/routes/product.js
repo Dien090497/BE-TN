@@ -29,6 +29,8 @@ const controller = new ProductController();
 
 router.get("/",(req, res) => controller.listProduct(req, res));
 
+router.get("/:id_product",(req, res) => controller.getProduct(req, res));
+
 router.get("/info",(req, res) => controller.info(req, res));
 
 router.get("/size/:listID",(req, res) => controller.size(req, res));
