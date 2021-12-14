@@ -4,8 +4,16 @@ module.exports = {
         con.query('SELECT * FROM aeshop.admin WHERE email = ? and password = ?', [email, password], callback)
     },
 
-    EditProfile(con,[email, new_password], callback){
-        con.query('UPDATE admin set password = ? WHERE email = ?',[new_password,email] ,callback)
+    getUser(con, [page, size], callback) {
+        con.query('SELECT * FROM user ORDER BY id_user DESC limit '+page*size+','+size, callback)
+    },
+
+    countUser(con, callback){
+        con.query('SELECT COUNT(*) as count FROM user', callback)
+    },
+
+    EditProfile(con,[id_admin, new_password], callback){
+        con.query('UPDATE admin set password = ? WHERE id_admin = ?',[new_password,id_admin] ,callback)
     },
 
     SetToken(con, [id_admin,token], callback){

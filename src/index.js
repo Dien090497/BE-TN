@@ -72,10 +72,6 @@ app.use("/news", news);
 const order = require("./routes/order");
 app.use("/order", order);
 
-// //Notification
-// const notification = require("./routes/notification");
-// app.use("/push", notification);
-
 //Administrator
 const administrator = require("./routes/administrator");
 app.use("/administrator", administrator);
