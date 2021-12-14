@@ -27,6 +27,21 @@ class AdministratorController {
         })
       })
     }
+
+
+  updateAdmin(req, res) {
+    Admin.getIsAdmin(req.con,[req.body.id_admin],(err,suc)=>{
+      if (err) return res.status(503).json(errorResponse(503, 'Update admin err',err));
+      if (suc[0].is_admin === 0) return res.status(200).json(successResponse(200,{message: 'Bạn không có quyền cập nhật'}));
+      Admin.setUserIsAdmin(req.con,[req.body.action,req.body.id_user],(err,suc)=>{
+        if (err) return res.status(503).json(errorResponse(503, 'Update user admin err',err));
+        Admin.setArmin(req.con,[req.body.action,req.body.name,req.body.id_user,req.body.password],(error,stt)=>{
+          if (error) return res.status(503).json(errorResponse(503, 'Update admin err',error));
+          return res.status(200).json(successResponse(200));
+        })
+      })
+    })
+  }
 }
 
 module.exports = AdministratorController;

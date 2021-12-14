@@ -31,8 +31,6 @@ router.get("/",(req, res) => controller.listProduct(req, res));
 
 router.get("/info",(req, res) => controller.info(req, res));
 
-router.get("/:id_product",(req, res) => controller.getProduct(req, res));
-
 router.get("/size/:listID",(req, res) => controller.size(req, res));
 
 router.put("/add-product",Auth.verifyToken ,upload.array('pictureProduct', 30), (req, res) => controller.addProductFinal(req, res));
@@ -43,10 +41,12 @@ router.delete("/delete-product/:id_product" ,Auth.verifyToken , (req, res) => co
 
 router.get("/brand/:id_brand",(req, res) => controller.listBrand(req, res));
 
-router.get("/category/:id_category",(req, res) => controller.listCategory(req, res));
-
 router.get("/category",(req, res) => controller.category(req, res));
 
+router.get("/category/:id_category",(req, res) => controller.listCategory(req, res));
+
 router.get("/style/:id_style",(req, res) => controller.listStyle(req, res));
+
+router.get("/:id_product",(req, res) => controller.getProduct(req, res));
 
 module.exports = router;

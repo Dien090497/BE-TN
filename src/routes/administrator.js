@@ -13,4 +13,8 @@ router.post("/",Auth.verifyToken ,(req,res)=>controller.editProfile(req,res));
 
 router.get("/user",Auth.verifyToken , (req,res)=>controller.getUser(req,res));
 
+router.post("/update",Auth.verifyToken , (req,res)=>controller.updateAdmin(req,res));
+
+
+
 module.exports = router;
