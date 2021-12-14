@@ -16,7 +16,7 @@ class ProductController {
             for (var i = 0; i < resultProduct.length; i++) {
               resultProduct[i].src = []
               for (var j = 0; j < resultImage.length; j++) {
-                if (resultProduct[i].id_product == resultImage[j].id_product) {
+                if (resultProduct[i].id_product === resultImage[j].id_product) {
                   resultProduct[i].src.push(resultImage[j].src);
                 }
               }
@@ -30,6 +30,27 @@ class ProductController {
 
             })
 
+          }
+        })
+      }
+    })
+  }
+
+  getProduct(req, res){
+    Product.Product(req.con,[req.params.id_product] ,(err, resultProduct) => {
+      if (err) return res.status(503).json(errorResponse(503, 'Server error',err));
+      if (resultProduct) {
+        Product.ListImage(req.con, (err, resultImage) => {
+          if (err) return res.status(503).json(errorResponse(503, 'Server error'));
+          if (resultImage) {
+            for (var i = 0; i < resultProduct.length; i++) {
+              resultProduct[i].src = []
+              for (var j = 0; j < resultImage.length; j++) {
+                if (resultProduct[i].id_product === resultImage[j].id_product) {
+                  resultProduct[i].src.push(resultImage[j].src);
+                }
+              }
+            }
           }
         })
       }
@@ -225,6 +246,12 @@ class ProductController {
           }));
         }
       })
+    })
+  }
+
+  category(req, res) {
+    Product.ListCategory(req.con, (err, result) => {
+      if (result) return res.json(result);
     })
   }
 

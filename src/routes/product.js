@@ -43,6 +43,8 @@ router.get("/brand/:id_brand",(req, res) => controller.listBrand(req, res));
 
 router.get("/category/:id_category",(req, res) => controller.listCategory(req, res));
 
+router.get("/category",(req, res) => controller.category(req, res));
+
 router.get("/style/:id_style",(req, res) => controller.listStyle(req, res));
 
 module.exports = router;
