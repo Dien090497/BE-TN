@@ -22,5 +22,10 @@ module.exports = {
         if (id_bill)  sql= 'SELECT firebase_token FROM user INNER JOIN bill ON bill.id_user = user.id_user WHERE id_bill = ' + id_bill
         else sql = 'SELECT firebase_token FROM user WHERE firebase_token is NOT NULL'
         con.query(sql, callback)
+    },
+
+    setInfoUser(con,data,callback){
+        con.query('UPDATE user set phone_number = ? , name = ? , address = ? , birthday = ? , avatar =? where id_user= ?',
+          [data.phone_number, data.name, data.address, data.birthay, data.avatar, data.id_user], callback)
     }
 }
