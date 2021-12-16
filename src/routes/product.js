@@ -50,3 +50,4 @@ router.get("/style/:id_style",(req, res) => controller.listStyle(req, res));
 router.get("/:id_product",(req, res) => controller.getProduct(req, res));
 
 module.exports = router;
+

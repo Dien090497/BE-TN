@@ -9,48 +9,37 @@ class ProductController {
   listProduct(req, res) {
     Product.ListProduct(req.con,[req.query.page, req.query.size] ,(err, resultProduct) => {
       if (err) return res.status(503).json(errorResponse(503, 'Server error',err));
-      if (resultProduct) {
-        Product.ListImage(req.con, (err, resultImage) => {
-          if (err) return res.status(503).json(errorResponse(503, 'Server error'));
-          if (resultImage) {
-            for (var i = 0; i < resultProduct.length; i++) {
-              resultProduct[i].src = []
-              for (var j = 0; j < resultImage.length; j++) {
-                if (resultProduct[i].id_product === resultImage[j].id_product) {
-                  resultProduct[i].src.push(resultImage[j].src);
-                }
-              }
-            }
-            Product.countProduct(req.con,(err, count)=>{
-              if (err) return res.status(503).json(errorResponse(503, 'Server error'));
-              return res.status(200).json(successResponse(200,{
-                count: count[0].count,
-                products: resultProduct
-              }));
-
-            })
-
-          }
-        })
-      }
+      Product.countProduct(req.con,(err, count)=>{
+        if (err) return res.status(503).json(errorResponse(503, 'Server error'));
+        return res.status(200).json(successResponse(200,{
+          count: count[0].count,
+          products: resultProduct
+        }));
+      })
     })
   }
 
   getProduct(req, res){
-
     Product.Product(req.con,[req.params.id_product] ,(err, resultProduct) => {
       if (err) return res.status(503).json(errorResponse(503, 'Server error',err));
-      if (resultProduct) {
-        Product.ProductImage(req.con, req.params.id_product ,(errImg, resultImage) => {
-          if (errImg) return res.status(503).json(errorResponse(503, 'Server error',errImg));
-          const image =[]
-          resultImage.map(obj=>{
-            image.push(obj.src)
-          })
-          const data = resultProduct[0]
-          data.image = image
-          return res.status(201).json(successResponse(201, data));
+      if (resultProduct.length > 1){
+        const size = []
+        const qnt = []
+        const image = []
+        resultProduct.map(obj=>{
+          size.push(obj.size_name)
+          qnt.push(obj.qnt)
+          image.push(obj.src)
         })
+        resultProduct[0].qnt = Array.from(new Set(qnt));
+        resultProduct[0].size = Array.from(new Set(size));
+        resultProduct[0].src = Array.from(new Set(image));
+        return res.status(201).json(successResponse(201, resultProduct[0]));
+      }else {
+        resultProduct[0].qnt = [resultProduct[0].qnt];
+        resultProduct[0].size = [resultProduct[0].size_name];
+        resultProduct[0].src = [resultProduct[0].src];
+        return res.status(201).json(successResponse(201, resultProduct[0]));
       }
     })
   }
@@ -112,7 +101,9 @@ class ProductController {
       newSize.push([Number.parseInt(data.id_product), arrSize[i], Number.parseInt(arQnt[i])]);
     }
     data.size = newSize
-    Product.UpdateProduct(req.con, data, (errProduct, result) => {
+    let image = null
+    if (req.files.length> 0){image = req.files[0].filename}
+    Product.UpdateProduct(req.con, [data,image], (errProduct, result) => {
       if (errProduct) return res.status(503).json(errorResponse(503, 'Update Product Error', errProduct));
       if (result) {
         Product.DeleteSize(req.con, data, (errDeleteSize, resultSize) => {
@@ -157,7 +148,7 @@ class ProductController {
           if (errSize) return res.status(503).json(errorResponse(503,'Server error',errSize))
           Product.DeleteImageProduct(req.con, req.params.id_product, (errImg, result) => {
             if (errImg) return res.status(503).json(errorResponse(503,'Img error',errImg))
-            return res.status(200).json(successResponse(200))
+            return res.status(200).json(successResponse(200,{message:'OK'}))
           })
         })
       })
