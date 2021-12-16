@@ -77,8 +77,8 @@ const administrator = require("./routes/administrator");
 app.use("/administrator", administrator);
 
 //Help
-const help = require("./routes/help");
-app.use("/help", help);
+const search = require("./routes/search");
+app.use("/search", search);
 
 //about us
 const aboutUs = require("./routes/about-us");
