@@ -70,7 +70,7 @@ module.exports = {
             'INNER JOIN seasion on seasion.id_style = product.id_style '+
             'INNER JOIN brand on brand.id_brand = product.id_brand '+
             'WHERE product.id_category IN ('+con.escape(data.id_category) +') ' +
-            'ORDER BY product.name ' + desc+
+            'ORDER BY product.impot_price ' + desc+
             'LIMIT 0,100';
         con.query(sql,callback)
     },
