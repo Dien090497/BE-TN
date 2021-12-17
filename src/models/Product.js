@@ -62,7 +62,7 @@ module.exports = {
         Number(data.sale),
         Number(data.impot_price),
         data.description,
-        '/uploads/'+data.src[0]
+        data.src[0]
       ], callback)
   },
 
