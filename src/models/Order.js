@@ -4,6 +4,14 @@ module.exports = {
     con.query('SELECT bill.id_bill,bill.delivery_address,bill.payment_methods,bill.status, user.name, bill.create_at, user.phone_number FROM bill INNER JOIN user ON bill.id_user = user.id_user ORDER BY id_bill limit ' +page*pageSize+','+pageSize, callback)
   },
 
+  getListOrderUser(con,[id_user,page, pageSize], callback){
+    con.query('SELECT bill.id_bill,bill.delivery_address,bill.payment_methods,bill.status, user.name, bill.create_at, user.phone_number FROM bill INNER JOIN user ON bill.id_user = user.id_user WHERE bill.id_user = ? ORDER BY id_bill limit ' +page*pageSize+','+pageSize,[id_user], callback)
+  },
+
+  countBillUser(con,id_user ,callback){
+    con.query('SELECT COUNT(*) as count FROM bill WHERE bill.id_user = ?',[id_user] , callback)
+  },
+
   getDetailOrder(con,[idBill,page,size], callback){
     con.query('SELECT product.name, bill_detail.prices, bill_detail.size, bill_detail.amount,bill.status, bill.delivery_address FROM bill ' +
       'INNER JOIN bill_detail ON bill_detail.id_bill= bill.id_bill ' +

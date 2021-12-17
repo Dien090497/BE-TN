@@ -27,6 +27,19 @@ class OrderController {
         })
     }
 
+    listOrderUser(res, req){
+        Order.getListOrderUser(req.con,[req.params.id_user,req.query.page, req.query.size],(err, result)=>{
+            if (err) return res.status(503).json(errorResponse(503, 'List Order error',err));
+            Order.countBillUser(req.con,req.params.id_user,(errCount, resultCount)=>{
+                if (errCount) return res.status(503).json(errorResponse(503, 'Count error',errCount));
+                return res.status(201).json(successResponse(201, {
+                    order: result,
+                    count: resultCount[0].count
+                }));
+            })
+        })
+    }
+
     detailOrder(res, req){
         Order.getDetailOrder(req.con,[Number(req.params.id_bill),Number(req.query.page), Number(req.query.size)],(err, result)=>{
             if (err) return res.status(503).json(errorResponse(503, 'Detail Bill error',err));

@@ -18,4 +18,7 @@ router.put("/update-order", (req, res) =>controller.editStatusOrder(res,req));
 
 router.put("/update-order/address/:id_bill", (req, res) =>controller.editAddress(res,req));
 
+router.get("/:id_user", (req, res) =>controller.listOrderUser(res,req));
+
+
 module.exports = router;
