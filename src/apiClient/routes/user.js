@@ -21,21 +21,13 @@ const upload = multer({
 })
 
 /**
- * Routing for News
+ * Routing for User
  */
-const NewsController = require("../controllers/NewsController");
-const controller = new NewsController();
 
-router.get("/", (req, res) => controller.getNews(req, res));
+const UserController = require("../controllers/UserController");
+const controller = new UserController();
 
-router.get("/:id_news", (req, res) => controller.getInfoNews(req, res));
-
-router.put("/add-news", upload.single('imageNews'), (req, res) => controller.addNews(req, res));
-
-router.post("/delete/:id_news", (req, res) => controller.deleteNews(req, res));
-
-router.put("/edit-news", upload.single('imageNews'), (req, res) => controller.editNews(req, res));
-
+router.post("/update", upload.single("avatar"),(req,res)=>controller.updateInfoUser(req,res));
 
 
 module.exports = router;

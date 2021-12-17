@@ -12,6 +12,16 @@ const app = express();
 
 app.use(cors())
 
+
+const admin = require("firebase-admin");
+const serviceAccount = require("./few-tn-firebase-adminsdk-cdl0t-01a6a0cb00.json");
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://firebase-adminsdk-cdl0t@few-tn.iam.gserviceaccount.com"
+});
+
+
 app.engine('handlebars', exphdb());
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'resources/views'))
@@ -62,17 +72,13 @@ app.use("/news", news);
 const order = require("./routes/order");
 app.use("/order", order);
 
-// //Notification
-// const notification = require("./routes/notification");
-// app.use("/push", notification);
-
 //Administrator
 const administrator = require("./routes/administrator");
 app.use("/administrator", administrator);
 
 //Help
-const help = require("./routes/help");
-app.use("/help", help);
+const search = require("./routes/search");
+app.use("/search", search);
 
 //about us
 const aboutUs = require("./routes/about-us");
@@ -85,6 +91,9 @@ app.use("/client", clientLogin);
 
 const clientProduct = require("./apiClient/routes/product");
 app.use("/client", clientProduct);
+
+const user = require("./apiClient/routes/user");
+app.use("/user", user);
 
 app.listen(process.env.PORT || 4444, () => {
     console.log('http://localhost:4444')

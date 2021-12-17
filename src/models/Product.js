@@ -4,7 +4,17 @@ module.exports = {
     con.query('SELECT product.*, seasion.style_name,category.name_category,brand.brand_name FROM product ' +
       'INNER JOIN seasion ON product.id_style = seasion.id_style ' +
       'INNER JOIN category ON product.id_category = category.id_category ' +
-      'INNER JOIN brand on product.id_brand = brand.id_brand ORDER BY id_product limit '+page*pageSize+','+pageSize, callback)
+      'INNER JOIN brand on product.id_brand = brand.id_brand ORDER BY create_at DESC limit '+page*pageSize+','+pageSize, callback)
+  },
+
+  Product(con,[id_product], callback) {
+    con.query('SELECT product.id_product,product.name, product.export_price, product.impot_price, product.sale, product.description, product.id_category, category.name_category, product.create_at, product.id_brand, brand.brand_name, product.id_style, seasion.style_name, size.size_name, size.qnt, image.src FROM product ' +
+      'INNER JOIN category on category.id_category= product.id_category ' +
+      'INNER JOIN seasion on seasion.id_style = product.id_style ' +
+      'INNER JOIN brand on brand.id_brand = product.id_brand ' +
+      'INNER JOIN size on size.id_product = product.id_product ' +
+      'INNER JOIN image on image.id_product = product.id_product ' +
+      'where product.id_product = '+id_product, callback)
   },
 
   countProduct(con, callback){
@@ -13,6 +23,10 @@ module.exports = {
 
   ListImage(con, callback) {
     con.query('SELECT id_product,src FROM image where image_type="product"', callback)
+  },
+
+  ProductImage(con, id_product ,callback) {
+    con.query('SELECT src FROM image where id_product = '+id_product, callback)
   },
 
   DetailProduct(con, id_product, callback) {
@@ -27,8 +41,9 @@ module.exports = {
   ListImageProduct(con, id_product, callback) {
     con.query('SELECT src FROM image WHERE id_product = ? and image_type = "product"', id_product, callback)
   },
-  ListOption(con, table_name, callback) {
-    con.query('SELECT * FROM ' + table_name, callback)
+
+  ListImageProductId(con, id_product, callback) {
+    con.query('SELECT src FROM image WHERE id_product in '+con.escape(id_product), id_product, callback)
   },
 
   SizeProduct(con, arr, callback) {
@@ -37,7 +52,7 @@ module.exports = {
   },
 
   AddProduct(con, data, callback) {
-    con.query('INSERT INTO product(name,export_price,id_style,id_category,id_brand,create_at,sale,impot_price,description) VALUES(?,?,?,?,?,NOW(),?,?,?);',
+    con.query('INSERT INTO product(name,export_price,id_style,id_category,id_brand,create_at,sale,impot_price,description,src) VALUES(?,?,?,?,?,NOW(),?,?,?,?);',
       [
         data.name,
         Number(data.export_price),
@@ -46,7 +61,8 @@ module.exports = {
         parseInt(data.id_brand),
         Number(data.sale),
         Number(data.impot_price),
-        data.description
+        data.description,
+        data.src[0]
       ], callback)
   },
 
@@ -60,7 +76,7 @@ module.exports = {
   },
 
 
-  UpdateProduct(con, data, callback) {
+  UpdateProduct(con, [data,image], callback) {
     con.query('UPDATE product set ' +
       (data.name? 'name ="'+data.name+'", ' :'') +
       (data.export_price ? 'export_price = '+data.export_price+' ,' : '') +
@@ -68,11 +84,13 @@ module.exports = {
       (data.sale ? ' sale= '+data.sale+',' : '') +
       (data.id_category ? 'id_category= '+data.id_category+', ' : '') +
       (data.id_style ? 'id_style= '+data.id_style+', ' : '') +
+      (image ? 'src= '+con.escape(image)+', ' : '') +
       (data.id_brand ? 'id_brand= '+data.id_brand+',' : '') +
-      (data.description ? 'description= "'+data.description+'" ' :  'description='+'"Không có miêu tả"'+' ') +
+      (data.description ? 'description= '+con.escape(data.description)+' ' :  'description='+'"Không có miêu tả"'+' ') +
       'where id_product =?',
       [parseInt( data.id_product)], callback)
   },
+
   DeleteSize(con, data, callback) {
     con.query('DELETE FROM size WHERE id_product ='+data.id_product,callback)
   },
@@ -108,5 +126,18 @@ module.exports = {
 
   ListStyle(con,callback){
     con.query('SELECT * FROM seasion',callback);
+  },
+
+
+  ListBrandProduct(con,[id_brand,page,size],callback){
+    con.query('SELECT * FROM product WHERE id_brand = '+id_brand+' ORDER BY create_at DESC limit '+page*size+','+size,callback);
+  },
+
+  ListCategoryProduct(con,[id_category,page,size],callback){
+    con.query('SELECT * FROM product WHERE id_category = '+id_category+' ORDER BY create_at DESC limit '+page*size+','+size,callback);
+  },
+
+  ListStyleProduct(con,[id_style,page,size],callback){
+    con.query('SELECT * FROM product WHERE id_style = '+id_style+' ORDER BY create_at DESC limit '+page*size+','+size,callback);
   },
 }

@@ -21,6 +21,14 @@ module.exports = {
     con.query(sql, [detailBill], callback);
   },
 
+  removeQntProduct(){
+    con.query(sql, [detailBill], callback);
+  },
+
+  addQntProduct(){
+
+  },
+
   countBill(con, callback){
     con.query('SELECT COUNT(*) as count FROM bill', callback)
   },
