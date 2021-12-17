@@ -28,13 +28,13 @@ const controller = new NewsController();
 
 router.get("/", (req, res) => controller.getNews(req, res));
 
-router.get("/:id_news", (req, res) => controller.getInfoNews(req, res));
-
 router.put("/add-news", upload.single('imageNews'), (req, res) => controller.addNews(req, res));
 
 router.post("/delete/:id_news", (req, res) => controller.deleteNews(req, res));
 
 router.put("/edit-news", upload.single('imageNews'), (req, res) => controller.editNews(req, res));
+
+router.get("/:id_news", (req, res) => controller.getInfoNews(req, res));
 
 
 

@@ -37,7 +37,7 @@ class NewsController {
               if (e) return res.status(503).json(errorResponse(503, 'Token Firebase error',e));
               const tokenFirebase=[];
               token.map(obj=>{
-                tokenFirebase.push(obj.firebase_token)
+                tokenFirebase.push(obj.firebase_token.toString())
               })
               const payload = {
                     notification: {
@@ -45,7 +45,7 @@ class NewsController {
                         body: req.body.title,
                     }
                 };
-                admin.messaging().sendToDevice(tokenFirebase, payload , options)
+                admin.messaging().sendToDevice(Array.from(new Set(tokenFirebase)), payload , options)
                   .then((response)=>{
                       console.log('Send Message success!!!', response)
                   }).catch((err)=>{
