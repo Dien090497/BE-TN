@@ -26,6 +26,9 @@ module.exports = {
 
     setInfoUser(con,data,callback){
         con.query('UPDATE user set phone_number = ? , name = ? , address = ? , birthday = ? , avatar =? where id_user= ?',
-          [data.phone_number, data.name, data.address, data.birthay, data.avatar, data.id_user], callback)
-    }
+          [data.phone_number, data.name, data.address, data.birthday, data.avatar, data.id_user], callback)
+    },
+    getInforUser(con,data,callback){
+    con.query('SELECT * FROM user  where id_user= ?',[data.id_user], callback)
+}
 }
