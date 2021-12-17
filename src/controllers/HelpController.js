@@ -1,4 +1,4 @@
-class HelpController {
+ class HelpController {
     getHelp(req, res) {
         res.render('help')
     }
