@@ -18,6 +18,7 @@ module.exports = {
         let sql ='';
         if (id_bill)  sql= 'SELECT firebase_token FROM user INNER JOIN bill ON bill.id_user = user.id_user WHERE id_bill = ' + id_bill
         else sql = 'SELECT firebase_token FROM user WHERE firebase_token is NOT NULL'
+        console.log(sql)
         con.query(sql, callback)
     },
 
