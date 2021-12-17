@@ -29,5 +29,8 @@ const controller = new UserController();
 
 router.post("/update", upload.single("avatar"),(req,res)=>controller.updateInfoUser(req,res));
 
+router.post("/change-password", (req,res)=>controller.changePassword(req,res));
+
+
 
 module.exports = router;
