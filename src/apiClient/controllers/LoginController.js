@@ -132,6 +132,18 @@ class LoginController {
     })
   }
 
+  saveFirebaseToken(req, res){
+    const data = {
+      token: req.body.firebase_token,
+      id_user: req.body.id_user
+    }
+    User.saveFirebaseToken(req.con,data,(err,stt)=>{
+      if(err) return  res.status(400).json(errorResponse(400,'Save Firebase Token Fail '))
+      if (stt.affectedRows === 0) return res.status(403).json(errorResponse(403, 'Not Found'));
+      return  res.status(200).json(successResponse(200,{message:'OK'}))
+    })
+  }
+
 }
 
 module.exports = LoginController;

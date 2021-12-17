@@ -8,7 +8,7 @@ const Auth = require('../middleware/Auth');
 const OrderController = require("../controllers/OrderController");
 const controller = new OrderController();
 
-router.get("/", (req, res) =>controller.listOrder(res,req));
+router.get("/", (req, res) =>controller.lisder(res,req));
 
 router.post("/", (req,res)=>controller.setOrder(res,req));
 
