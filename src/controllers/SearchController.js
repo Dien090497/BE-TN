@@ -81,7 +81,8 @@ class SearchController {
                         }
                     })
                     return res.status(200).json(successResponse(200, data));
-
+                }else {
+                    return res.status(200).json(successResponse(200, result));
                 }
             })
         }
