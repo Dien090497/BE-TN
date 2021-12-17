@@ -84,7 +84,7 @@ module.exports = {
       (data.sale ? ' sale= '+data.sale+',' : '') +
       (data.id_category ? 'id_category= '+data.id_category+', ' : '') +
       (data.id_style ? 'id_style= '+data.id_style+', ' : '') +
-      (image ? 'src= '+con.escape(image)+', ' : '') +
+      (image ? 'src= "/uploads/'+con.escape(image)+'", ' : '') +
       (data.id_brand ? 'id_brand= '+data.id_brand+',' : '') +
       (data.description ? 'description= '+con.escape(data.description)+' ' :  'description='+'"Không có miêu tả"'+' ') +
       'where id_product =?',
