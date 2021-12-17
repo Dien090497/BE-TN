@@ -10,6 +10,9 @@ class UserController {
             if (ress.affectedRows === 0) return res.status(403).json(errorResponse(403, 'Not Found'));
             return res.status(200).json(successResponse(200, req.body));
         })
+      User.getInforUser(req.con,req.body,(err,response)=>{
+        return res.send(response[0]);
+      })
     }
 
     changePassword(req, res) {
@@ -26,7 +29,6 @@ class UserController {
             })
 
         })
-
     }
 }
 

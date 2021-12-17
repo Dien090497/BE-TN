@@ -82,15 +82,7 @@ class LoginController {
         }
         if (result) {
           if (result[0]) {
-            // User.addToken(req.con,[result[0].id_user,token],(err,result1)=>{
-            //  if(err){
-            //   return  console.log('err',err)
-            //  }
-            //   console.log(result1.token)
-            console.log(result)
               return  res.status(201).json(successResponse(201,result[0]))
-            // })
-
           } else {
             return  res.status(400).json(errorResponse({message:'err'}))
           }
