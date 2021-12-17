@@ -2,6 +2,7 @@ module.exports = {
     Register(con, data, callback) {
         con.query('INSERT INTO aeshop.user(id_user,name,password,token) VALUES(?,?,?,?);', [data.id_user, data.name, data.password,data.token], callback)
     },
+
     addToken(con, data, callback) {
         con.query('UPDATE aeshop.user set token = ? WHERE id_user = ?', [data.token, data.id_user], callback)
     },
@@ -27,5 +28,16 @@ module.exports = {
     setInfoUser(con,data,callback){
         con.query('UPDATE user set phone_number = ? , name = ? , address = ? , birthday = ? , avatar =? where id_user= ?',
           [data.phone_number, data.name, data.address, data.birthay, data.avatar, data.id_user], callback)
+    },
+
+    changePassword(con,[id_user,password],callback){
+        con.query('UPDATE user set password = ? where id_user= ?',
+            [password,id_user], callback)
+    },
+
+    validatePassword(con,[id_user,password],callback){
+        con.query('SELECT COUNT(*) as count FROM user WHERE id_user = ? AND password = ?',
+            [id_user,password], callback)
     }
+
 }
