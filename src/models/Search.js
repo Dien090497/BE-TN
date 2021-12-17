@@ -42,7 +42,7 @@ module.exports = {
             'INNER JOIN size on size.id_product = product.id_product '+
             'WHERE product.name LIKE \'%'+ name +'%\' ' +
             maxRange + sizeArr + category +
-            ' ORDER BY product.export_price ' +orderBy +
+            ' ORDER BY product.name ' +orderBy +
             'LIMIT 0,100';
 
         console.log(sql)
