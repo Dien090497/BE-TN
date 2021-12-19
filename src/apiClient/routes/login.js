@@ -11,5 +11,7 @@ router.post("/login", controller.login);
 
 router.post("/register", controller.register);
 
+router.post("/save-firebase-token", (req,res)=>controller.saveFirebaseToken(req,res));
+
 
 module.exports = router;

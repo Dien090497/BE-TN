@@ -27,6 +27,19 @@ class OrderController {
         })
     }
 
+    listOrderUser(res, req){
+        Order.getListOrderUser(req.con,[req.params.id_user,req.query.page, req.query.size],(err, result)=>{
+            if (err) return res.status(503).json(errorResponse(503, 'List Order error',err));
+            Order.countBillUser(req.con,req.params.id_user,(errCount, resultCount)=>{
+                if (errCount) return res.status(503).json(errorResponse(503, 'Count error',errCount));
+                return res.status(201).json(successResponse(201, {
+                    order: result,
+                    count: resultCount[0].count
+                }));
+            })
+        })
+    }
+
     detailOrder(res, req){
         Order.getDetailOrder(req.con,[Number(req.params.id_bill),Number(req.query.page), Number(req.query.size)],(err, result)=>{
             if (err) return res.status(503).json(errorResponse(503, 'Detail Bill error',err));
@@ -97,6 +110,23 @@ class OrderController {
             if (err) return res.status(503).json(errorResponse(503, 'Bill Address error',err));
             return res.status(200).json(successResponse(200,data));
         })
+    }
+
+    setQntProduct(res, req){
+        if (req.body.type === 'add'){
+            Order.addQntProduct( req.con,[req.body.qnt,req.body.id_product,req.body.size_name],(err,stt)=>{
+                if (err) return res.status(503).json(errorResponse(503, 'Bill Address error',err));
+                if (stt.affectedRows === 0) return res.status(403).json(errorResponse(403, 'Not Found'));
+                return res.status(200).json(successResponse(200, {message: 'OK'}));
+            })
+        }   else {
+            Order.removeQntProduct( req.con,[req.body.qnt,req.body.id_product,req.body.size_name],(err,stt)=>{
+                if (err) return res.status(503).json(errorResponse(503, 'Error',err));
+                if (stt.affectedRows === 0) return res.status(403).json(errorResponse(403, 'Not Found'));
+                return res.status(200).json(successResponse(200, {message: 'OK'}));
+
+            })
+        }
     }
 
 

@@ -2,7 +2,6 @@ module.exports = {
     Register(con, data, callback) {
         con.query('INSERT INTO aeshop.user(id_user,name,password,token) VALUES(?,?,?,?);', [data.id_user, data.name, data.password,data.token], callback)
     },
-
     addToken(con, data, callback) {
         con.query('UPDATE aeshop.user set token = ? WHERE id_user = ?', [data.token, data.id_user], callback)
     },
@@ -22,22 +21,29 @@ module.exports = {
         let sql ='';
         if (id_bill)  sql= 'SELECT firebase_token FROM user INNER JOIN bill ON bill.id_user = user.id_user WHERE id_bill = ' + id_bill
         else sql = 'SELECT firebase_token FROM user WHERE firebase_token is NOT NULL'
+        console.log(sql)
         con.query(sql, callback)
     },
 
     setInfoUser(con,data,callback){
         con.query('UPDATE user set phone_number = ? , name = ? , address = ? , birthday = ? , avatar =? where id_user= ?',
-          [data.phone_number, data.name, data.address, data.birthay, data.avatar, data.id_user], callback)
+          [data.phone_number, data.name, data.address, data.birthday, data.avatar, data.id_user], callback)
     },
-
-    changePassword(con,[id_user,password],callback){
+    getInforUser(con,data,callback){
+    con.query('SELECT * FROM user  where id_user= ?',[data.id_user], callback)
+} ,
+changePassword(con,[id_user,password],callback){
         con.query('UPDATE user set password = ? where id_user= ?',
-            [password,id_user], callback)
+          [password,id_user], callback)
     },
 
     validatePassword(con,[id_user,password],callback){
         con.query('SELECT COUNT(*) as count FROM user WHERE id_user = ? AND password = ?',
-            [id_user,password], callback)
-    }
+          [id_user,password], callback)
+    },
+
+    saveFirebaseToken(con, data, callback) {
+        con.query('UPDATE user set firebase_token = ? WHERE id_user = ?', [data.token, data.id_user], callback)
+    },
 
 }
