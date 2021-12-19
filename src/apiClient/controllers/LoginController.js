@@ -12,6 +12,7 @@ class LoginController {
     const data = {
       id_user: req.body.id_user,
       password: password,
+      phone_number:req.body.id_user,
       login_type: req.body.login_type,
       name: req.body.name,
       avatar: req.body.avatar,
