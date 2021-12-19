@@ -112,6 +112,23 @@ class OrderController {
         })
     }
 
+    setQntProduct(res, req){
+        if (req.body.type === 'add'){
+            Order.addQntProduct( req.con,[req.body.qnt,req.body.id_product,req.body.size_name],(err,stt)=>{
+                if (err) return res.status(503).json(errorResponse(503, 'Bill Address error',err));
+                if (stt.affectedRows === 0) return res.status(403).json(errorResponse(403, 'Not Found'));
+                return res.status(200).json(successResponse(200, {message: 'OK'}));
+            })
+        }   else {
+            Order.removeQntProduct( req.con,[req.body.qnt,req.body.id_product,req.body.size_name],(err,stt)=>{
+                if (err) return res.status(503).json(errorResponse(503, 'Error',err));
+                if (stt.affectedRows === 0) return res.status(403).json(errorResponse(403, 'Not Found'));
+                return res.status(200).json(successResponse(200, {message: 'OK'}));
+
+            })
+        }
+    }
+
 
 }
 
