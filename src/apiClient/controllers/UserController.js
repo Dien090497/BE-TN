@@ -1,6 +1,6 @@
 const User = require('../models/User')
 const {errorResponse, successResponse} = require("../../lib/response");
-
+const md5 = require('md5');
 class UserController {
      updateInfoUser(req, res){
          User.setInfoUser(req.con, req.body, async (err, ress) => {

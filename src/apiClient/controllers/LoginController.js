@@ -11,6 +11,7 @@ class LoginController {
     var password = md5(req.body.password);
     const data = {
       id_user: req.body.id_user,
+      phone_number:req.body.id_user,
       password: password,
       login_type: req.body.login_type,
       name: req.body.name,
