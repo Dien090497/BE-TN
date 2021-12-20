@@ -20,6 +20,7 @@ module.exports = {
     },
 
     SearchNameSize(con,[name,desc,min,max,size,id_category],callback){
+        console.log(min, max)
         let orderBy ='ASC '
         let sizeArr =''
         let category =''
