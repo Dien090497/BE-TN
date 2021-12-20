@@ -28,8 +28,8 @@ module.exports = {
         let maxRange =''
         if(desc && desc === '1') { orderBy = 'DESC '}
         if(desc && desc === '0'){ orderBy = 'ASC '}
-        if(max === undefined || max !== '0' ){maxRange = 'AND product.export_price <= ' +max+' '}
-        if(min === undefined || min !== '0'){minRange = 'AND product.export_price >= ' +min+' '}
+        if(max !== undefined && max !== '0' ){maxRange = 'AND product.export_price <= ' +max+' '}
+        if(min !== undefined && min !== '0'){minRange = 'AND product.export_price >= ' +min+' '}
         //if (max !== 0 || min !==0){
           //  if (min) {minRange = 'AND product.export_price <= ' +min+' '}
             //if (max) {maxRange = 'AND product.export_price >= ' +max+' '}
