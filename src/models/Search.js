@@ -28,8 +28,8 @@ module.exports = {
         if(desc && desc === '1') { orderBy = 'DESC '}
         if(desc && desc === '0'){ orderBy = 'ASC '}
         if (max !== 0 || min !==0){
-            if (min) {minRange = 'AND product.export_price >= ' +min+' '}
-            if (max) {maxRange = 'AND product.export_price <= ' +max+' '}
+            if (min) {minRange = 'AND product.export_price <= ' +min+' '}
+            if (max) {maxRange = 'AND product.export_price >= ' +max+' '}
         }
         if(size.length >0){sizeArr = ' AND size.size_name in (' + con.escape(size)+') '}
         if(id_category.length >0){
