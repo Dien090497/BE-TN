@@ -43,7 +43,7 @@ module.exports = {
             'INNER JOIN brand on brand.id_brand = product.id_brand '+
             'INNER JOIN size on size.id_product = product.id_product '+
             'WHERE product.name LIKE \'%'+ name +'%\' ' +
-            maxRange + sizeArr + category +
+            maxRange + minRange + sizeArr + category +
             ' ORDER BY product.export_price ' +orderBy +
             'LIMIT 0,100';
 
