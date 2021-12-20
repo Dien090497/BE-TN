@@ -4,7 +4,7 @@ module.exports = {
     con.query('SELECT product.*, seasion.style_name,category.name_category,brand.brand_name FROM product ' +
       'INNER JOIN seasion ON product.id_style = seasion.id_style ' +
       'INNER JOIN category ON product.id_category = category.id_category ' +
-      'INNER JOIN brand on product.id_brand = brand.id_brand ORDER BY create_at DESC limit '+page*pageSize+','+pageSize, callback)
+      'INNER JOIN brand on product.id_brand = brand.id_brand ORDER BY product.id_product DESC limit '+page*pageSize+','+pageSize, callback)
   },
 
   Product(con,[id_product], callback) {
