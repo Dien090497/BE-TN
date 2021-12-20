@@ -66,7 +66,6 @@ class SearchController {
             category.map(id=>{
                 idCategory.push(parseInt(id))
             })
-            console.log(req.query.min, req.query.max)
             Search.SearchNameSize(req.con,[req.params.name,req.query.price, req.query.min, req.query.max, size,idCategory],(err,result)=>{
                 if (err) return res.status(404).json(errorResponse(404, 'Not Fount', err));
                 if (result.length > 0){
