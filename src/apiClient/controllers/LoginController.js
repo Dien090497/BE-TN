@@ -12,7 +12,6 @@ class LoginController {
     const data = {
       id_user: req.body.id_user,
       password: password,
-      phone_number:req.body.id_user,
       login_type: req.body.login_type,
       name: req.body.name,
       avatar: req.body.avatar,
@@ -112,11 +111,14 @@ class LoginController {
 
     const data = {
       id_user: req.body.id_user,
+      phone_number: req.body.phone_number,
       name: req.body.name,
       password: password,
+      avatar: req.body.avatar,
       token:token
     }
 
+    console.log(data)
     User.Register(req.con, data, (err, result) => {
     if(err){
      return  res.status(400).json(errorResponse(400,'Registration failed '))
