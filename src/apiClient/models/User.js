@@ -1,6 +1,6 @@
 module.exports = {
     Register(con, data, callback) {
-        con.query('INSERT INTO aeshop.user(id_user,name,password,token,avatar) VALUES(?,?,?,?,?);', [data.id_user, data.name, data.password,data.token,data.avatar], callback)
+        con.query('INSERT INTO aeshop.user(id_user,name,password,phone_number,token,avatar) VALUES(?,?,?,?,?,?);', [data.id_user, data.name, data.password,data.token,data.avatar,data.phone_number], callback)
     },
     addToken(con, data, callback) {
         con.query('UPDATE aeshop.user set token = ? WHERE id_user = ?', [data.token, data.id_user], callback)
