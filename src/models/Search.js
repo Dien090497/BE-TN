@@ -38,7 +38,7 @@ module.exports = {
         if(id_category.length >0){
             category = ' AND product.id_category in (' + con.escape(id_category)+') '
         }
-        const sql = 'SELECT product.id_product,product.name, product.export_price, product.impot_price, product.sale, product.src category.name_category, brand.brand_name, seasion.style_name FROM product '+
+        const sql = 'SELECT product.id_product,product.name, product.export_price, product.impot_price, product.sale, product.src, category.name_category, brand.brand_name, seasion.style_name FROM product '+
             'INNER JOIN category on category.id_category= product.id_category '+
             'INNER JOIN seasion on seasion.id_style = product.id_style '+
             'INNER JOIN brand on brand.id_brand = product.id_brand '+
